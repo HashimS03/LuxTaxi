@@ -98,9 +98,12 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.notesPlaceholder":
       "Any special requirements, luggage details, or preferences...",
     "booking.submit": "Request Booking",
+    "booking.sending": "Sending Request...",
+    "booking.errorGeneric":
+      "Something went wrong. Please try again or contact us directly.",
     "booking.submitNote":
       "Our team will confirm your booking within 30 minutes during business hours.",
-    "booking.confirmedTitle": "Booking Confirmed",
+    "booking.confirmedTitle": "Booking Request Received",
     "booking.confirmedDescription":
       "Thank you for choosing LuxTaxi. Our team will contact you shortly to confirm the details of your ride. You will receive a confirmation email within 15 minutes.",
     "booking.bookAnother": "Book Another Ride",
@@ -236,6 +239,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.notesPlaceholder":
       "Eventuelle spesielle krav, bagasjedetaljer eller preferanser...",
     "booking.submit": "Send Bestilling",
+    "booking.sending": "Sender Forespørsel...",
+    "booking.errorGeneric":
+      "Noe gikk galt. Vennligst prøv igjen eller kontakt oss direkte.",
     "booking.submitNote":
       "Vårt team vil bekrefte bestillingen din innen 30 minutter i åpningstiden.",
     "booking.confirmedTitle": "Bestilling Bekreftet",
