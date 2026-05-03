@@ -77,7 +77,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.name": "Full Name",
     "booking.namePlaceholder": "John Doe",
     "booking.email": "Email Address",
-    "booking.emailPlaceholder": "john@example.com",
+    "booking.emailPlaceholder": "johndoe@example.com",
     "booking.phone": "Phone Number",
     "booking.phonePlaceholder": "+1 (234) 567-890",
     "booking.vehicle": "Vehicle Type",
