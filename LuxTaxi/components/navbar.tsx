@@ -14,9 +14,9 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex h-20 items-center justify-center">
-          <Link href="/" className="flex items-center gap-2 absolute left-16 lg:left-20">
-            <span className="font-serif text-2xl font-bold tracking-tight text-foreground">
-              Lux<span className="text-primary">Taxi</span>
+          <Link href="/" className="flex items-center gap-2 absolute left-6 lg:left-20">
+            <span className="font-serif text-xl md:text-2xl font-bold tracking-tight text-foreground">
+              Oslo <span className="text-primary">Limousine</span>
             </span>
           </Link>
 

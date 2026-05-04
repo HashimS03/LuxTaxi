@@ -44,7 +44,7 @@ export function Fleet() {
             return (
               <div
                 key={vehicle.key}
-                className="group relative overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_20px_hsl(185,75%,50%,0.1)]"
+                className="group relative overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_30px_hsl(42,65%,58%,0.15)]"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
@@ -96,7 +96,7 @@ export function Fleet() {
 
         {/* Custom Order Card */}
         <div className="mt-8">
-          <div className="group relative overflow-hidden rounded-lg border border-dashed border-primary/40 bg-card transition-all duration-300 hover:border-primary hover:shadow-[0_0_30px_hsl(185,75%,50%,0.12)]">
+          <div className="group relative overflow-hidden rounded-lg border border-dashed border-primary/40 bg-card transition-all duration-300 hover:border-primary hover:shadow-[0_0_30px_hsl(42,65%,58%,0.15)]">
             <div className="flex flex-col md:flex-row items-center gap-8 p-8 md:p-10">
               <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-primary/10">
                 <UsersRound className="h-10 w-10 text-primary" />

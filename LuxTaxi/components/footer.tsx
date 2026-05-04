@@ -14,7 +14,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link href="/" className="inline-block">
               <span className="font-serif text-2xl font-bold text-foreground">
-                Lux<span className="text-primary">Taxi</span>
+                Oslo <span className="text-primary">Limousine</span>
               </span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
@@ -90,11 +90,11 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:info@luxtaxi.com"
+                  href="mailto:info@oslolimousine.no"
                   className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   <Mail className="h-4 w-4 text-accent" />
-                  info@luxtaxi.com
+                  info@oslolimousine.no
                 </a>
               </li>
               <li>
@@ -109,7 +109,7 @@ export function Footer() {
 
         <div className="mt-12 border-t border-border pt-8 flex flex-col items-center gap-4 md:flex-row md:justify-between">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} LuxTaxi. {t("footer.rights")}
+            &copy; {new Date().getFullYear()} Oslo Limousine. {t("footer.rights")}
           </p>
           <div className="flex gap-6">
             <Link
