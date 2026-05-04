@@ -1,24 +1,30 @@
 import React from "react";
 import type { Metadata, Viewport } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { DM_Sans, Cormorant_Garamond } from "next/font/google";
 import { LocaleProvider } from "@/lib/locale-context";
 
 import "./globals.css";
 
-const _inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const _playfair = Playfair_Display({
+const dmSans = DM_Sans({ 
+  subsets: ["latin"], 
+  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"]
+});
+
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-playfair",
+  weight: ["400", "500", "600", "700"]
 });
 
 export const metadata: Metadata = {
-  title: "Oslo Limousine - Premium Transport Services",
+  title: "Oslo Limousine | Premium Transport Services",
   description:
-    "Book luxury limousines, sedans, vans, and minibuses for your premium transport needs in Oslo. Professional chauffeurs, elegant vehicles, exceptional service.",
+    "Experience luxury transportation in Oslo. Professional chauffeurs, elegant vehicles, and exceptional service for airport transfers, corporate events, and special occasions.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0d1117",
+  themeColor: "#f5f3ef",
 };
 
 export default function RootLayout({
@@ -27,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-background">
+    <html lang="en" className={`${dmSans.variable} ${cormorant.variable} bg-background`}>
       <body className="font-sans antialiased bg-background text-foreground">
         <LocaleProvider>{children}</LocaleProvider>
       </body>

@@ -23,33 +23,40 @@ export function Services() {
   const { t } = useLocale();
 
   return (
-    <section id="services" className="py-24 lg:py-32">
+    <section id="services" className="py-24 lg:py-32 bg-background">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <p className="text-sm font-medium uppercase tracking-[0.3em] text-primary mb-4">
-            {t("services.tagline")}
-          </p>
-          <h2 className="font-serif text-4xl font-bold tracking-tight text-foreground md:text-5xl text-balance">
-            {t("services.title")}
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground leading-relaxed">
+        {/* Section Header */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
+          <div className="max-w-2xl">
+            <p className="text-sm font-medium uppercase tracking-[0.2em] text-accent mb-4">
+              {t("services.tagline")}
+            </p>
+            <h2 className="font-serif text-4xl md:text-5xl font-semibold tracking-tight text-foreground leading-tight">
+              {t("services.title")}
+            </h2>
+          </div>
+          <p className="text-lg text-muted-foreground leading-relaxed max-w-md">
             {t("services.description")}
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {serviceKeys.map((service) => (
+        {/* Services Grid */}
+        <div className="grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3 border border-border">
+          {serviceKeys.map((service, index) => (
             <div
               key={service.key}
-              className="group rounded-lg border border-border bg-card p-8 transition-all duration-300 hover:border-primary/50 hover:shadow-[0_0_30px_hsl(42,65%,58%,0.12)]"
+              className="group bg-card p-10 transition-all duration-500 hover:bg-muted/50"
+              style={{ animationDelay: `${index * 0.05}s` }}
             >
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                <service.icon className="h-6 w-6 text-primary" />
+              <div className="mb-6 flex h-14 w-14 items-center justify-center bg-muted border border-border transition-all duration-500 group-hover:bg-foreground group-hover:border-foreground">
+                <service.icon className="h-6 w-6 text-foreground transition-colors duration-500 group-hover:text-background" />
               </div>
-              <h3 className="font-serif text-xl font-bold text-foreground mb-2">
+              
+              <h3 className="font-serif text-xl font-semibold text-foreground mb-3">
                 {t(`services.${service.key}`)}
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              
+              <p className="text-muted-foreground leading-relaxed">
                 {t(`services.${service.key}Desc`)}
               </p>
             </div>
