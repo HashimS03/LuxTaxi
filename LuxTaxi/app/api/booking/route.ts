@@ -44,13 +44,13 @@ export async function POST(request: Request) {
 
     // Email to the owner with booking details
     await resend.emails.send({
-      from: "LuxTaxi Bookings <onboarding@resend.dev>",
+      from: "Oslo Limousine Bookings <onboarding@resend.dev>",
       to: OWNER_EMAIL,
       subject: `New Booking Request from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #0b0e17; color: #d4dce8; padding: 32px; border-radius: 12px;">
           <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="color: #1cc9d4; font-size: 28px; margin: 0;">LuxTaxi</h1>
+            <h1 style="color: #1cc9d4; font-size: 28px; margin: 0;">Oslo Limousine</h1>
             <p style="color: #6b7a8d; font-size: 14px; margin-top: 4px;">New Booking Request</p>
           </div>
           
@@ -113,13 +113,13 @@ export async function POST(request: Request) {
 
     // Confirmation email to the customer
     await resend.emails.send({
-      from: "LuxTaxi <onboarding@resend.dev>",
+      from: "Oslo Limousine <onboarding@resend.dev>",
       to: email,
-      subject: "Your LuxTaxi Booking Request Received",
+      subject: "Your Oslo Limousine Booking Request Received",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #0b0e17; color: #d4dce8; padding: 32px; border-radius: 12px;">
           <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="color: #1cc9d4; font-size: 28px; margin: 0;">LuxTaxi</h1>
+            <h1 style="color: #1cc9d4; font-size: 28px; margin: 0;">Oslo Limousine</h1>
             <p style="color: #6b7a8d; font-size: 14px; margin-top: 4px;">Premium Transport Services</p>
           </div>
           
@@ -174,7 +174,7 @@ export async function POST(request: Request) {
               If you have any urgent questions, call us at <a href="tel:+1234567890" style="color: #1cc9d4; text-decoration: none;">+1 (234) 567-890</a>
             </p>
             <p style="color: #3d4a5c; font-size: 11px; margin-top: 12px;">
-              &copy; ${new Date().getFullYear()} LuxTaxi. All rights reserved.
+              &copy; ${new Date().getFullYear()} Oslo Limousine. All rights reserved.
             </p>
           </div>
         </div>
