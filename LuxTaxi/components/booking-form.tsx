@@ -25,6 +25,7 @@ import {
   Loader2,
   AlertCircle,
   ArrowRight,
+  Info,
 } from "lucide-react";
 import { useLocale } from "@/lib/locale-context";
 
@@ -33,15 +34,42 @@ export function BookingForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedVehicle, setSelectedVehicle] = useState("");
+  const [dateError, setDateError] = useState("");
   const { t } = useLocale();
+
+  function validateDateTime(date: string, time: string): boolean {
+    if (!date || !time) return true; // Let the required validation handle empty values
+    
+    const selectedDateTime = new Date(`${date}T${time}`);
+    const now = new Date();
+    const minDateTime = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours from now
+    
+    if (selectedDateTime < minDateTime) {
+      setDateError(t("booking.dateError"));
+      return false;
+    }
+    
+    setDateError("");
+    return true;
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setDateError("");
 
     const form = e.currentTarget;
     const formData = new FormData(form);
+    
+    const date = formData.get("date") as string;
+    const time = formData.get("time") as string;
+    
+    // Validate 24-hour advance booking
+    if (!validateDateTime(date, time)) {
+      setLoading(false);
+      return;
+    }
 
     const body = {
       name: formData.get("name") as string,
@@ -51,8 +79,8 @@ export function BookingForm() {
       passengerCount: formData.get("passengerCount") as string | null,
       pickup: formData.get("pickup") as string,
       dropoff: formData.get("dropoff") as string,
-      date: formData.get("date") as string,
-      time: formData.get("time") as string,
+      date: date,
+      time: time,
       notes: formData.get("notes") as string | null,
     };
 
@@ -291,38 +319,48 @@ export function BookingForm() {
                   </div>
                 </div>
 
-                <div className="grid gap-6 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="date" className="text-sm font-medium text-foreground">
-                      {t("booking.date")}
-                    </Label>
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                      <Input
-                        id="date"
-                        name="date"
-                        type="date"
-                        required
-                        className="pl-10 h-12 bg-muted/50 border-border focus:bg-background transition-colors duration-300"
-                      />
+                <div className="space-y-2">
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="date" className="text-sm font-medium text-foreground">
+                        {t("booking.date")}
+                      </Label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                          id="date"
+                          name="date"
+                          type="date"
+                          required
+                          className={`pl-10 h-12 bg-muted/50 border-border focus:bg-background transition-colors duration-300 ${dateError ? "border-destructive" : ""}`}
+                          onChange={() => setDateError("")}
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="time" className="text-sm font-medium text-foreground">
-                      {t("booking.time")}
-                    </Label>
-                    <div className="relative">
-                      <Clock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                      <Input
-                        id="time"
-                        name="time"
-                        type="time"
-                        required
-                        className="pl-10 h-12 bg-muted/50 border-border focus:bg-background transition-colors duration-300"
-                      />
+                    <div className="space-y-2">
+                      <Label htmlFor="time" className="text-sm font-medium text-foreground">
+                        {t("booking.time")}
+                      </Label>
+                      <div className="relative">
+                        <Clock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                          id="time"
+                          name="time"
+                          type="time"
+                          required
+                          className={`pl-10 h-12 bg-muted/50 border-border focus:bg-background transition-colors duration-300 ${dateError ? "border-destructive" : ""}`}
+                          onChange={() => setDateError("")}
+                        />
+                      </div>
                     </div>
                   </div>
+                  {dateError && (
+                    <div className="flex items-center gap-2 text-destructive text-sm mt-2">
+                      <AlertCircle className="h-4 w-4 shrink-0" />
+                      <span>{dateError}</span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -339,7 +377,21 @@ export function BookingForm() {
                 </div>
               </div>
 
-              <div className="mt-8">
+              {/* Booking Policy Notice */}
+              <div className="mt-6 p-4 bg-muted/50 border border-border">
+                <div className="flex items-start gap-3">
+                  <Info className="h-5 w-5 text-accent shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-2">{t("booking.policyTitle")}</p>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>{t("booking.policy1")}</li>
+                      <li>{t("booking.policy2")}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6">
                 <Button
                   type="submit"
                   size="lg"
