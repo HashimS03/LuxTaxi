@@ -14,7 +14,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     "hero.title1": "Travel in",
     "hero.title2": "unmatched elegance",
     "hero.description":
-      "From luxury sedans to executive minibuses, LuxTaxi delivers a first-class transport experience for every occasion.",
+      "From luxury limousines to executive minibuses, Oslo Limousine delivers a first-class transport experience for every occasion.",
     "hero.cta": "Book Your Ride",
     "hero.explore": "Explore Our Fleet",
     "hero.discover": "Discover",
@@ -105,14 +105,14 @@ export const translations: Record<Locale, Record<string, string>> = {
       "Our team will confirm your booking within 30 minutes during business hours.",
     "booking.confirmedTitle": "Booking Request Received",
     "booking.confirmedDescription":
-      "Thank you for choosing LuxTaxi. Our team will contact you shortly to confirm the details of your ride. You will receive a confirmation email within 15 minutes.",
+      "Thank you for choosing Oslo Limousine. Our team will contact you shortly to confirm the details of your ride. You will receive a confirmation email within 15 minutes.",
     "booking.bookAnother": "Book Another Ride",
 
     // Services
     "services.tagline": "Services",
     "services.title": "Tailored to your needs",
     "services.description":
-      "Whatever the occasion, LuxTaxi provides a seamless and refined transport experience.",
+      "Whatever the occasion, Oslo Limousine provides a seamless and refined transport experience.",
     "services.airport": "Airport Transfers",
     "services.airportDesc":
       "Punctual pickups and drop-offs at all major airports. Flight tracking ensures we are always on time.",
@@ -155,7 +155,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     "hero.title1": "Reis med",
     "hero.title2": "uovertruffen eleganse",
     "hero.description":
-      "Fra luksus sedaner til eksklusive minibusser, LuxTaxi leverer en førsteklasses transportopplevelse for enhver anledning.",
+      "Fra luksus limousiner til eksklusive minibusser, Oslo Limousine leverer en førsteklasses transportopplevelse for enhver anledning.",
     "hero.cta": "Bestill Din Tur",
     "hero.explore": "Utforsk Vår Flåte",
     "hero.discover": "Oppdag",
@@ -246,14 +246,14 @@ export const translations: Record<Locale, Record<string, string>> = {
       "Vårt team vil bekrefte bestillingen din innen 30 minutter i åpningstiden.",
     "booking.confirmedTitle": "Bestilling Bekreftet",
     "booking.confirmedDescription":
-      "Takk for at du valgte LuxTaxi. Vårt team vil kontakte deg snart for å bekrefte detaljene for turen din. Du vil motta en bekreftelse på e-post innen 15 minutter.",
+      "Takk for at du valgte Oslo Limousine. Vårt team vil kontakte deg snart for å bekrefte detaljene for turen din. Du vil motta en bekreftelse på e-post innen 15 minutter.",
     "booking.bookAnother": "Bestill En Ny Tur",
 
     // Services
     "services.tagline": "Tjenester",
     "services.title": "Skreddersydd for dine behov",
     "services.description":
-      "Uansett anledning, LuxTaxi tilbyr en sømløs og raffinert transportopplevelse.",
+      "Uansett anledning, Oslo Limousine tilbyr en sømløs og raffinert transportopplevelse.",
     "services.airport": "Flyplasstransport",
     "services.airportDesc":
       "Punktlige hentinger og leveringer på alle store flyplasser. Flysporing sikrer at vi alltid er i tide.",

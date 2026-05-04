@@ -12,13 +12,13 @@ const _playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "LuxTaxi - Premium Transport Services",
+  title: "Oslo Limousine - Premium Transport Services",
   description:
-    "Book luxury sedans, vans, and minibuses for your premium transport needs. Professional chauffeurs, elegant vehicles, exceptional service.",
+    "Book luxury limousines, sedans, vans, and minibuses for your premium transport needs in Oslo. Professional chauffeurs, elegant vehicles, exceptional service.",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0e17",
+  themeColor: "#0d1117",
 };
 
 export default function RootLayout({
@@ -27,8 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="font-sans antialiased">
+    <html lang="en" className="bg-background">
+      <body className="font-sans antialiased bg-background text-foreground">
         <LocaleProvider>{children}</LocaleProvider>
       </body>
     </html>
