@@ -25,6 +25,7 @@ import {
   Loader2,
   AlertCircle,
   ArrowRight,
+  Info,
 } from "lucide-react";
 import { useLocale } from "@/lib/locale-context";
 
@@ -339,7 +340,21 @@ export function BookingForm() {
                 </div>
               </div>
 
-              <div className="mt-8">
+              {/* Booking Policy Notice */}
+              <div className="mt-6 p-4 bg-muted/50 border border-border">
+                <div className="flex items-start gap-3">
+                  <Info className="h-5 w-5 text-accent shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-2">{t("booking.policyTitle")}</p>
+                    <ul className="text-sm text-muted-foreground space-y-1">
+                      <li>{t("booking.policy1")}</li>
+                      <li>{t("booking.policy2")}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6">
                 <Button
                   type="submit"
                   size="lg"
