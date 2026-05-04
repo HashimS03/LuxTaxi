@@ -109,7 +109,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.dateError": "Bookings must be made at least 24 hours in advance. Please select a later date or time.",
     "booking.confirmedTitle": "Booking Request Received",
     "booking.confirmedDescription":
-      "Thank you for choosing Oslo Limousine. Our team will contact you shortly to confirm the details of your ride. You will receive a confirmation email within 15 minutes.",
+      "Thank you for choosing Oslo Limousine. Our team will contact you shortly to confirm the details of your ride. You will receive a confirmation email within 30 minutes.",
     "booking.bookAnother": "Book Another Ride",
 
     // Services
@@ -254,7 +254,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.dateError": "Bestillinger må gjøres minst 24 timer i forveien. Vennligst velg en senere dato eller tid.",
     "booking.confirmedTitle": "Bestilling Bekreftet",
     "booking.confirmedDescription":
-      "Takk for at du valgte Oslo Limousine. Vårt team vil kontakte deg snart for å bekrefte detaljene for turen din. Du vil motta en bekreftelse på e-post innen 15 minutter.",
+      "Takk for at du valgte Oslo Limousine. Vårt team vil kontakte deg snart for å bekrefte detaljene for turen din. Du vil motta en bekreftelse på e-post innen 30 minutter.",
     "booking.bookAnother": "Bestill En Ny Tur",
 
     // Services
