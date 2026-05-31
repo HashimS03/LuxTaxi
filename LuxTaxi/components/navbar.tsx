@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Globe, ArrowRight, Phone } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/lib/locale-context";
 
@@ -21,149 +21,102 @@ export function Navbar() {
 
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
-          ? "bg-background/95 backdrop-blur-md border-b border-border shadow-sm" 
+          ? "bg-background/95 backdrop-blur-md border-b border-border" 
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="font-serif text-xl md:text-2xl font-semibold tracking-tight text-foreground transition-colors">
-              Oslo Limousine
-            </span>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 sm:h-20 items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="font-serif text-lg sm:text-xl font-semibold text-foreground">
+            Oslo Limousine
           </Link>
 
-          <div className="hidden lg:flex items-center gap-10">
-            <Link
-              href="#fleet"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
-            >
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-8">
+            <Link href="#fleet" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {t("nav.fleet")}
             </Link>
-            <Link
-              href="#services"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
-            >
+            <Link href="#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {t("nav.services")}
             </Link>
-            <Link
-              href="#booking"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
-            >
+            <Link href="#booking" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {t("nav.book")}
             </Link>
-            <Link
-              href="#contact"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
-            >
-              {t("nav.contact")}
-            </Link>
-          </div>
-
-          <div className="hidden lg:flex items-center gap-4">
             <button
-              type="button"
               onClick={() => setLocale(locale === "en" ? "no" : "en")}
-              className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
-              aria-label="Switch language"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              <Globe className="h-4 w-4" />
-              <span>{locale === "en" ? "NO" : "EN"}</span>
+              {locale === "en" ? "Norsk" : "English"}
             </button>
-            <Button asChild className="group">
-              <Link href="#booking" className="flex items-center gap-2">
-                {t("nav.bookRide")}
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
+            <Button asChild size="sm">
+              <Link href="#booking">{t("nav.bookRide")}</Link>
             </Button>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
+          {/* Mobile Actions */}
+          <div className="flex items-center gap-2 md:hidden">
             <a
               href="tel:+4748420389"
-              className="flex items-center justify-center h-10 w-10 rounded-full bg-accent text-accent-foreground"
+              className="flex items-center justify-center h-9 w-9 rounded-full bg-accent text-accent-foreground"
               aria-label="Call us"
             >
               <Phone className="h-4 w-4" />
             </a>
             <button
-              type="button"
               onClick={() => setLocale(locale === "en" ? "no" : "en")}
-              className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Switch language"
+              className="h-9 px-2 text-xs font-medium text-muted-foreground"
             >
-              <Globe className="h-4 w-4" />
-              <span>{locale === "en" ? "NO" : "EN"}</span>
+              {locale === "en" ? "NO" : "EN"}
             </button>
             <button
-              type="button"
               onClick={() => setIsOpen(!isOpen)}
-              className="text-foreground p-2"
+              className="p-2 text-foreground"
               aria-label={isOpen ? "Close menu" : "Open menu"}
             >
-              {isOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
       </div>
 
-      <div 
-        className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="bg-background/98 backdrop-blur-md border-t border-border">
-          <div className="px-6 py-8 flex flex-col gap-6">
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden bg-background border-t border-border">
+          <div className="px-4 py-4 space-y-3">
             <Link
               href="#fleet"
               onClick={() => setIsOpen(false)}
-              className="text-lg font-medium text-foreground hover:text-accent transition-colors duration-300"
+              className="block py-2 text-foreground font-medium"
             >
               {t("nav.fleet")}
             </Link>
             <Link
               href="#services"
               onClick={() => setIsOpen(false)}
-              className="text-lg font-medium text-foreground hover:text-accent transition-colors duration-300"
+              className="block py-2 text-foreground font-medium"
             >
               {t("nav.services")}
             </Link>
             <Link
               href="#booking"
               onClick={() => setIsOpen(false)}
-              className="text-lg font-medium text-foreground hover:text-accent transition-colors duration-300"
+              className="block py-2 text-foreground font-medium"
             >
               {t("nav.book")}
             </Link>
-            <Link
-              href="#contact"
-              onClick={() => setIsOpen(false)}
-              className="text-lg font-medium text-foreground hover:text-accent transition-colors duration-300"
-            >
-              {t("nav.contact")}
-            </Link>
-            <div className="pt-4 border-t border-border space-y-3">
+            <div className="pt-2 space-y-2">
               <Button asChild className="w-full">
                 <Link href="#booking" onClick={() => setIsOpen(false)}>
                   {t("nav.bookRide")}
                 </Link>
               </Button>
-              <Button asChild variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-                <a href="tel:+4748420389" className="flex items-center justify-center gap-2">
-                  <Phone className="h-4 w-4" />
-                  +47 484 20 389
-                </a>
-              </Button>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 }
