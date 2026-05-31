@@ -10,11 +10,11 @@ export const translations: Record<Locale, Record<string, string>> = {
     "nav.bookRide": "Book a Ride",
 
     // Hero
-    "hero.tagline": "Premium Transport Services",
-    "hero.title1": "Travel in",
-    "hero.title2": "unmatched elegance",
+    "hero.tagline": "Professional Chauffeur Service in Oslo",
+    "hero.title1": "Premium",
+    "hero.title2": "transport service",
     "hero.description":
-      "From luxury limousines to executive minibuses, Oslo Limousine delivers a first-class transport experience for every occasion.",
+      "Professional chauffeur-driven transport for tourists, business travelers, and special occasions. Airport transfers, city tours, and private hire throughout Oslo and Norway.",
     "hero.cta": "Book Your Ride",
     "hero.explore": "Explore Our Fleet",
     "hero.discover": "Discover",
@@ -103,10 +103,10 @@ export const translations: Record<Locale, Record<string, string>> = {
       "Something went wrong. Please try again or contact us directly.",
     "booking.submitNote":
       "Our team will confirm your booking within 30 minutes during business hours.",
-    "booking.policyTitle": "Important Booking Information",
-    "booking.policy1": "Bookings must be made at least 24 hours before the scheduled ride.",
-    "booking.policy2": "Payment must be completed at least 5 hours before your ride.",
-    "booking.dateError": "Bookings must be made at least 24 hours in advance. Please select a later date or time.",
+    "booking.policyTitle": "Booking Information",
+    "booking.policy1": "Online bookings require at least 5 hours advance notice.",
+    "booking.policy2": "Need a ride sooner? Call us directly at +47 484 20 389",
+    "booking.dateError": "Online bookings must be made at least 5 hours in advance. For urgent requests, please call us at +47 484 20 389.",
     "booking.confirmedTitle": "Booking Request Received",
     "booking.confirmedDescription":
       "Thank you for choosing Oslo Limousine. Our team will contact you shortly to confirm the details of your ride. You will receive a confirmation email within 15 minutes.",
@@ -155,11 +155,11 @@ export const translations: Record<Locale, Record<string, string>> = {
     "nav.bookRide": "Bestill en Tur",
 
     // Hero
-    "hero.tagline": "Premium Transporttjenester",
-    "hero.title1": "Reis med",
-    "hero.title2": "uovertruffen eleganse",
+    "hero.tagline": "Profesjonell Sjaffortjeneste i Oslo",
+    "hero.title1": "Premium",
+    "hero.title2": "transporttjeneste",
     "hero.description":
-      "Fra luksus limousiner til eksklusive minibusser, Oslo Limousine leverer en førsteklasses transportopplevelse for enhver anledning.",
+      "Profesjonell sjaffordrevet transport for turister, forretningsreisende og spesielle anledninger. Flyplasstransport, byturer og privat leie i hele Oslo og Norge.",
     "hero.cta": "Bestill Din Tur",
     "hero.explore": "Utforsk Vår Flåte",
     "hero.discover": "Oppdag",
@@ -248,10 +248,10 @@ export const translations: Record<Locale, Record<string, string>> = {
       "Noe gikk galt. Vennligst prøv igjen eller kontakt oss direkte.",
     "booking.submitNote":
       "Vårt team vil bekrefte bestillingen din innen 30 minutter i åpningstiden.",
-    "booking.policyTitle": "Viktig bestillingsinformasjon",
-    "booking.policy1": "Bestillinger må gjøres minst 24 timer før planlagt tur.",
-    "booking.policy2": "Betaling må fullføres minst 5 timer før turen.",
-    "booking.dateError": "Bestillinger må gjøres minst 24 timer i forveien. Vennligst velg en senere dato eller tid.",
+    "booking.policyTitle": "Bestillingsinformasjon",
+    "booking.policy1": "Nettbestillinger krever minst 5 timers forvarsel.",
+    "booking.policy2": "Trenger du transport raskere? Ring oss direkte på +47 484 20 389",
+    "booking.dateError": "Nettbestillinger må gjøres minst 5 timer i forveien. For hasteoppdrag, ring oss på +47 484 20 389.",
     "booking.confirmedTitle": "Bestilling Bekreftet",
     "booking.confirmedDescription":
       "Takk for at du valgte Oslo Limousine. Vårt team vil kontakte deg snart for å bekrefte detaljene for turen din. Du vil motta en bekreftelse på e-post innen 15 minutter.",
@@ -261,7 +261,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     "services.tagline": "Tjenester",
     "services.title": "Skreddersydd for dine behov",
     "services.description":
-      "Uansett anledning, Oslo Limousine tilbyr en sømløs og raffinert transportopplevelse.",
+      "Uansett anledning, Oslo Limousine tilbyr en s��mløs og raffinert transportopplevelse.",
     "services.airport": "Flyplasstransport",
     "services.airportDesc":
       "Punktlige hentinger og leveringer på alle store flyplasser. Flysporing sikrer at vi alltid er i tide.",

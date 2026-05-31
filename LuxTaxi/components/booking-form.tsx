@@ -42,7 +42,7 @@ export function BookingForm() {
     
     const selectedDateTime = new Date(`${date}T${time}`);
     const now = new Date();
-    const minDateTime = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours from now
+    const minDateTime = new Date(now.getTime() + 5 * 60 * 60 * 1000); // 5 hours from now
     
     if (selectedDateTime < minDateTime) {
       setDateError(t("booking.dateError"));
@@ -381,12 +381,16 @@ export function BookingForm() {
               <div className="mt-6 p-4 bg-muted/50 border border-border">
                 <div className="flex items-start gap-3">
                   <Info className="h-5 w-5 text-accent shrink-0 mt-0.5" />
-                  <div>
+                  <div className="flex-1">
                     <p className="text-sm font-medium text-foreground mb-2">{t("booking.policyTitle")}</p>
-                    <ul className="text-sm text-muted-foreground space-y-1">
-                      <li>{t("booking.policy1")}</li>
-                      <li>{t("booking.policy2")}</li>
-                    </ul>
+                    <p className="text-sm text-muted-foreground mb-1">{t("booking.policy1")}</p>
+                    <a 
+                      href="tel:+4748420389" 
+                      className="text-sm text-accent hover:underline font-medium inline-flex items-center gap-1"
+                    >
+                      <Phone className="h-3.5 w-3.5" />
+                      {t("booking.policy2")}
+                    </a>
                   </div>
                 </div>
               </div>

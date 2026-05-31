@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, Globe, ArrowRight } from "lucide-react";
+import { Menu, X, Globe, ArrowRight, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/lib/locale-context";
 
@@ -80,7 +80,14 @@ export function Navbar() {
             </Button>
           </div>
 
-          <div className="flex items-center gap-4 lg:hidden">
+          <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
+            <a
+              href="tel:+4748420389"
+              className="flex items-center justify-center h-10 w-10 rounded-full bg-accent text-accent-foreground"
+              aria-label="Call us"
+            >
+              <Phone className="h-4 w-4" />
+            </a>
             <button
               type="button"
               onClick={() => setLocale(locale === "en" ? "no" : "en")}
@@ -141,11 +148,17 @@ export function Navbar() {
             >
               {t("nav.contact")}
             </Link>
-            <div className="pt-4 border-t border-border">
+            <div className="pt-4 border-t border-border space-y-3">
               <Button asChild className="w-full">
                 <Link href="#booking" onClick={() => setIsOpen(false)}>
                   {t("nav.bookRide")}
                 </Link>
+              </Button>
+              <Button asChild variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                <a href="tel:+4748420389" className="flex items-center justify-center gap-2">
+                  <Phone className="h-4 w-4" />
+                  +47 484 20 389
+                </a>
               </Button>
             </div>
           </div>

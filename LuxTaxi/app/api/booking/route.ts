@@ -170,16 +170,16 @@ export async function POST(request: Request) {
           </div>
 
           <div style="margin-top: 16px; padding: 20px; background-color: #1a1f2e; border-radius: 8px; border: 1px solid #2a3548;">
-            <h3 style="color: #f5a623; font-size: 14px; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">Important Information</h3>
-            <ul style="color: #d4dce8; font-size: 14px; margin: 0; padding-left: 20px; line-height: 1.8;">
-              <li>Bookings must be made at least <strong>24 hours</strong> before the scheduled ride.</li>
-              <li>Payment must be completed at least <strong>5 hours</strong> before your ride.</li>
-            </ul>
+            <h3 style="color: #f5a623; font-size: 14px; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">Booking Information</h3>
+            <p style="color: #d4dce8; font-size: 14px; margin: 0; line-height: 1.8;">
+              Online bookings require at least <strong>5 hours</strong> advance notice.<br/>
+              Need a ride sooner? Call us directly at <a href="tel:+4748420389" style="color: #1cc9d4; text-decoration: none;"><strong>+47 484 20 389</strong></a>
+            </p>
           </div>
 
           <div style="text-align: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid #1e2640;">
             <p style="color: #6b7a8d; font-size: 13px; margin: 0;">
-              If you have any urgent questions, call us at <a href="tel:+1234567890" style="color: #1cc9d4; text-decoration: none;">+1 (234) 567-890</a>
+              Questions? Call us at <a href="tel:+4748420389" style="color: #1cc9d4; text-decoration: none;">+47 484 20 389</a>
             </p>
             <p style="color: #3d4a5c; font-size: 11px; margin-top: 12px;">
               &copy; ${new Date().getFullYear()} Oslo Limousine. All rights reserved.
