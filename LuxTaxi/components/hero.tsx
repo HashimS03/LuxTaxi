@@ -32,7 +32,7 @@ export function Hero() {
           
           <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.1] text-white">
             Chauffeur &<br />
-            <span className="text-accent">Transport Service</span>
+            <span className="text-amber-300">Transport Service</span>
           </h1>
           
           <p className="mt-5 text-base sm:text-lg text-white/80 max-w-md mx-auto sm:mx-0">
@@ -43,7 +43,7 @@ export function Hero() {
             <Button 
               size="lg" 
               asChild 
-              className="h-14 text-base bg-accent hover:bg-accent/90 text-white"
+              className="h-14 text-base bg-amber-400 hover:bg-amber-300 text-black font-semibold"
             >
               <Link href="#booking">
                 {t("hero.cta")}

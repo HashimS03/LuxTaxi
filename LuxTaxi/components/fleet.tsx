@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Users, ArrowRight, ChevronLeft, ChevronRight, MoveHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/lib/locale-context";
 
@@ -118,15 +118,14 @@ export function Fleet() {
             ))}
           </div>
 
-          {/* Mobile scroll hint */}
-          <div
-            className={`sm:hidden absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-foreground/90 text-background px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-500 ${
-              showScrollHint ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
-            }`}
-          >
-            <span>Swipe</span>
-            <ChevronRight className="h-3 w-3 animate-pulse" />
-          </div>
+          {/* Mobile scroll hint - animated drag indicator */}
+          {showScrollHint && (
+            <div className="sm:hidden absolute inset-0 pointer-events-none flex items-center justify-center">
+              <div className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center gap-2 animate-scroll-hint">
+                <MoveHorizontal className="h-5 w-5 text-foreground/60" />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Custom Order */}
