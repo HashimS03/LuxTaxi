@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, ArrowRight, ChevronLeft, ChevronRight, MoveHorizontal } from "lucide-react";
+import { Users, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/lib/locale-context";
 
@@ -16,14 +16,8 @@ const vehicles = [
 export function Fleet() {
   const { t } = useLocale();
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [showScrollHint, setShowScrollHint] = useState(true);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowScrollHint(false), 3000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const checkScroll = () => {
     if (scrollRef.current) {
@@ -46,14 +40,19 @@ export function Fleet() {
   return (
     <section id="fleet" className="py-16 sm:py-24 bg-card">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8 sm:mb-12">
-          <p className="text-xs font-medium uppercase tracking-widest text-accent mb-2">
-            {t("fleet.tagline")}
+        {/* Header with scroll hint text on mobile */}
+        <div className="mb-8 sm:mb-12 flex items-end justify-between">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-widest text-accent mb-2">
+              {t("fleet.tagline")}
+            </p>
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground">
+              {t("fleet.title")}
+            </h2>
+          </div>
+          <p className="text-xs text-muted-foreground sm:hidden">
+            Swipe to see more →
           </p>
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground">
-            {t("fleet.title")}
-          </h2>
         </div>
 
         {/* Vehicle Cards Container */}
@@ -82,14 +81,12 @@ export function Fleet() {
           <div
             ref={scrollRef}
             onScroll={checkScroll}
-            className="flex gap-4 overflow-x-auto pb-4 -mx-5 px-5 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible scrollbar-hide"
-            style={{ scrollSnapType: "x mandatory" }}
+            className="flex gap-4 overflow-x-auto pb-4 -mx-5 px-5 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible snap-x snap-mandatory scrollbar-hide"
           >
             {vehicles.map((vehicle) => (
               <div
                 key={vehicle.key}
-                className="flex-shrink-0 w-[280px] sm:w-auto bg-background border border-border overflow-hidden"
-                style={{ scrollSnapAlign: "start" }}
+                className="flex-shrink-0 w-[280px] sm:w-auto bg-background border border-border overflow-hidden snap-start"
               >
                 <div className="relative aspect-[4/3]">
                   <Image
@@ -117,15 +114,6 @@ export function Fleet() {
               </div>
             ))}
           </div>
-
-          {/* Mobile scroll hint - animated drag indicator */}
-          {showScrollHint && (
-            <div className="sm:hidden absolute inset-0 pointer-events-none flex items-center justify-center">
-              <div className="absolute right-8 top-1/2 -translate-y-1/2 flex items-center gap-2 animate-scroll-hint">
-                <MoveHorizontal className="h-5 w-5 text-foreground/60" />
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Custom Order */}

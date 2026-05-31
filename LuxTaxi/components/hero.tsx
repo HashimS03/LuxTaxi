@@ -3,16 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Phone, ChevronDown } from "lucide-react";
+import { Phone } from "lucide-react";
 import { useLocale } from "@/lib/locale-context";
 
 export function Hero() {
   const { t } = useLocale();
 
   return (
-    <section className="relative min-h-[100svh] flex flex-col">
-      {/* Background Image */}
-      <div className="absolute inset-0">
+    <section className="relative min-h-[100svh] flex flex-col bg-background">
+      {/* Top section with image */}
+      <div className="relative flex-1 min-h-[45vh] sm:min-h-[50vh]">
         <Image
           src="/images/hero.jpg"
           alt="Luxury limousine transport in Oslo"
@@ -20,31 +20,26 @@ export function Hero() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-background" />
       </div>
 
-      {/* Content - Centered on mobile */}
-      <div className="relative z-10 flex-1 flex flex-col justify-center px-6 pt-20 pb-24">
-        <div className="max-w-3xl mx-auto text-center sm:text-left sm:mx-0 sm:ml-auto sm:mr-auto lg:ml-[10%]">
-          <p className="text-xs sm:text-sm font-medium uppercase tracking-[0.2em] text-white/80 mb-4">
+      {/* Content section */}
+      <div className="relative z-10 px-5 sm:px-6 lg:px-8 pb-8 pt-6 sm:pt-10 -mt-16 sm:-mt-20">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent mb-3">
             Oslo, Norway
           </p>
           
-          <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.1] text-white">
-            Chauffeur &<br />
-            <span className="text-amber-300">Transport Service</span>
+          <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-foreground">
+            Professional Chauffeur & Transport Service
           </h1>
           
-          <p className="mt-5 text-base sm:text-lg text-white/80 max-w-md mx-auto sm:mx-0">
-            Professional transport for airport transfers, business travel, and special occasions.
+          <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
+            Airport transfers, business travel, and special occasions. Available 24/7.
           </p>
           
-          <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-sm mx-auto sm:mx-0 sm:max-w-none">
-            <Button 
-              size="lg" 
-              asChild 
-              className="h-14 text-base bg-amber-400 hover:bg-amber-300 text-black font-semibold"
-            >
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+            <Button size="lg" asChild className="h-12 sm:h-14 text-sm sm:text-base px-8">
               <Link href="#booking">
                 {t("hero.cta")}
               </Link>
@@ -53,27 +48,15 @@ export function Hero() {
               variant="outline"
               size="lg"
               asChild
-              className="h-14 text-base bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm"
+              className="h-12 sm:h-14 text-sm sm:text-base px-6"
             >
               <a href="tel:+4748420389" className="flex items-center justify-center gap-2">
-                <Phone className="h-5 w-5" />
-                <span>Call Now</span>
+                <Phone className="h-4 w-4" />
+                <span>+47 484 20 389</span>
               </a>
             </Button>
           </div>
         </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
-        <Link
-          href="#fleet"
-          className="flex flex-col items-center gap-1 text-white/60 hover:text-white transition-colors"
-          aria-label="Scroll down"
-        >
-          <span className="text-[10px] uppercase tracking-widest">Explore</span>
-          <ChevronDown className="h-5 w-5 animate-bounce" />
-        </Link>
       </div>
     </section>
   );
