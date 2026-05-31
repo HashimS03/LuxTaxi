@@ -1,8 +1,9 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Users, ArrowRight } from "lucide-react";
+import { Users, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/lib/locale-context";
 
@@ -14,10 +15,37 @@ const vehicles = [
 
 export function Fleet() {
   const { t } = useLocale();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showScrollHint, setShowScrollHint] = useState(true);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowScrollHint(false), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const scrollAmount = 300;
+      scrollRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
-    <section id="fleet" className="py-12 sm:py-20 lg:py-28 bg-card">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="fleet" className="py-16 sm:py-24 bg-card">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 sm:mb-12">
           <p className="text-xs font-medium uppercase tracking-widest text-accent mb-2">
@@ -26,49 +54,83 @@ export function Fleet() {
           <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground">
             {t("fleet.title")}
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-muted-foreground max-w-xl">
-            {t("fleet.description")}
-          </p>
         </div>
 
-        {/* Vehicle Cards - Horizontal scroll on mobile */}
-        <div className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-6 sm:overflow-visible">
-          {vehicles.map((vehicle) => (
-            <div
-              key={vehicle.key}
-              className="flex-shrink-0 w-72 sm:w-auto bg-background border border-border overflow-hidden"
-            >
-              <div className="relative aspect-[4/3]">
-                <Image
-                  src={vehicle.image}
-                  alt={t(`fleet.${vehicle.key}.name`)}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-background/90 px-2 py-1 text-xs font-medium">
-                  <Users className="h-3 w-3 text-accent" />
-                  {vehicle.passengers} {t("fleet.passengers")}
+        {/* Vehicle Cards Container */}
+        <div className="relative">
+          {/* Scroll buttons - desktop only */}
+          <button
+            onClick={() => scroll("left")}
+            className={`hidden sm:flex absolute -left-4 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full bg-background shadow-lg border border-border transition-opacity ${
+              canScrollLeft ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+            aria-label="Scroll left"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            className={`hidden sm:flex absolute -right-4 top-1/2 -translate-y-1/2 z-10 h-10 w-10 items-center justify-center rounded-full bg-background shadow-lg border border-border transition-opacity ${
+              canScrollRight ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+            aria-label="Scroll right"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+
+          {/* Scrollable container */}
+          <div
+            ref={scrollRef}
+            onScroll={checkScroll}
+            className="flex gap-4 overflow-x-auto pb-4 -mx-5 px-5 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:gap-6 sm:overflow-visible scrollbar-hide"
+            style={{ scrollSnapType: "x mandatory" }}
+          >
+            {vehicles.map((vehicle) => (
+              <div
+                key={vehicle.key}
+                className="flex-shrink-0 w-[280px] sm:w-auto bg-background border border-border overflow-hidden"
+                style={{ scrollSnapAlign: "start" }}
+              >
+                <div className="relative aspect-[4/3]">
+                  <Image
+                    src={vehicle.image}
+                    alt={t(`fleet.${vehicle.key}.name`)}
+                    fill
+                    className="object-cover"
+                  />
+                  <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-background/90 px-2 py-1 text-xs font-medium">
+                    <Users className="h-3 w-3 text-accent" />
+                    {vehicle.passengers}
+                  </div>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-serif text-lg font-semibold text-foreground mb-1">
+                    {t(`fleet.${vehicle.key}.name`)}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                    {t(`fleet.${vehicle.key}.description`)}
+                  </p>
+                  <Button asChild variant="outline" size="sm" className="w-full">
+                    <Link href="#booking">{t("fleet.book")}</Link>
+                  </Button>
                 </div>
               </div>
-              <div className="p-4 sm:p-5">
-                <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground mb-2">
-                  {t(`fleet.${vehicle.key}.name`)}
-                </h3>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                  {t(`fleet.${vehicle.key}.description`)}
-                </p>
-                <Button asChild variant="outline" size="sm" className="w-full">
-                  <Link href="#booking">
-                    {t("fleet.book")}
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Mobile scroll hint */}
+          <div
+            className={`sm:hidden absolute right-5 top-1/2 -translate-y-1/2 flex items-center gap-1 bg-foreground/90 text-background px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-500 ${
+              showScrollHint ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4 pointer-events-none"
+            }`}
+          >
+            <span>Swipe</span>
+            <ChevronRight className="h-3 w-3 animate-pulse" />
+          </div>
         </div>
 
-        {/* Custom Order - Simplified */}
-        <div className="mt-8 sm:mt-12 p-5 sm:p-8 border-2 border-dashed border-border bg-background">
+        {/* Custom Order */}
+        <div className="mt-10 sm:mt-14 p-5 sm:p-8 border border-border bg-background">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h3 className="font-serif text-lg sm:text-xl font-semibold text-foreground">
