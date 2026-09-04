@@ -32,7 +32,7 @@ export function Fleet() {
         </div>
 
         {/* Vehicle Cards */}
-        <div className="grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {vehicleKeys.map((vehicle, index) => {
             const name = t(`fleet.${vehicle.key}.name`);
             const description = t(`fleet.${vehicle.key}.description`);
@@ -98,13 +98,13 @@ export function Fleet() {
 
         {/* Custom Order Card */}
         <div className="mt-12">
-          <div className="bg-background border-2 border-dashed border-border p-10 lg:p-12 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 transition-all duration-300 hover:border-accent/50">
+          <div className="bg-background border-2 border-dashed border-border p-10 lg:p-12 flex flex-col md:flex-row items-center gap-8 lg:gap-12 transition-all duration-300 hover:border-accent/50">
             <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-accent/10 border border-accent/20">
               <UsersRound className="h-10 w-10 text-accent" />
             </div>
 
-            <div className="flex-1 text-center lg:text-left">
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-3">
+            <div className="flex-1 text-center md:text-left">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-3">
                 <h3 className="font-serif text-2xl font-semibold text-foreground">
                   {t("fleet.custom.name")}
                 </h3>
@@ -115,7 +115,7 @@ export function Fleet() {
               <p className="text-muted-foreground leading-relaxed mb-6 max-w-xl">
                 {t("fleet.custom.description")}
               </p>
-              <div className="flex flex-wrap justify-center lg:justify-start gap-2">
+              <div className="flex flex-wrap justify-center md:justify-start gap-2">
                 {[
                   t("fleet.custom.f1"),
                   t("fleet.custom.f2"),

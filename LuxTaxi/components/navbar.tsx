@@ -35,7 +35,7 @@ export function Navbar() {
             </span>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-10">
+          <div className="hidden md:flex items-center gap-6 lg:gap-10">
             <Link
               href="#fleet"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
@@ -62,7 +62,7 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
             <button
               type="button"
               onClick={() => setLocale(locale === "en" ? "no" : "en")}
@@ -80,7 +80,7 @@ export function Navbar() {
             </Button>
           </div>
 
-          <div className="flex items-center gap-4 lg:hidden">
+          <div className="flex items-center gap-4 md:hidden">
             <button
               type="button"
               onClick={() => setLocale(locale === "en" ? "no" : "en")}
@@ -106,8 +106,8 @@ export function Navbar() {
         </div>
       </div>
 
-      <div 
-        className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
           isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
