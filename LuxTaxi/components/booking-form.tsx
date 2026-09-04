@@ -37,6 +37,7 @@ export function BookingForm() {
   const [dateError, setDateError] = useState("");
   const { t } = useLocale();
 
+  
   function validateDateTime(date: string, time: string): boolean {
     if (!date || !time) return true; // Let the required validation handle empty values
     
