@@ -26,6 +26,8 @@ import {
   AlertCircle,
   ArrowRight,
   Info,
+  ShieldCheck,
+  BadgeDollarSign,
 } from "lucide-react";
 import { useLocale } from "@/lib/locale-context";
 
@@ -144,7 +146,7 @@ export function BookingForm() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
           {/* Left Column - Text */}
-          <div className="lg:py-8">
+          <div className="lg:py-8 lg:sticky lg:top-32 lg:self-start">
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-accent mb-4">
               {t("booking.tagline")}
             </p>
@@ -154,16 +156,16 @@ export function BookingForm() {
             <p className="text-lg text-muted-foreground leading-relaxed mb-10">
               {t("booking.description")}
             </p>
-            
+
             {/* Trust Indicators */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-6 sm:gap-8">
               <div className="flex items-start gap-4">
                 <div className="h-10 w-10 shrink-0 flex items-center justify-center bg-muted border border-border">
                   <Clock className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">24/7 Service</p>
-                  <p className="text-sm text-muted-foreground">Available any time</p>
+                  <p className="font-medium text-foreground">{t("booking.trust247Title")}</p>
+                  <p className="text-sm text-muted-foreground">{t("booking.trust247Desc")}</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
@@ -171,8 +173,26 @@ export function BookingForm() {
                   <CheckCircle2 className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">Instant Confirm</p>
-                  <p className="text-sm text-muted-foreground">Quick response</p>
+                  <p className="font-medium text-foreground">{t("booking.trustConfirmTitle")}</p>
+                  <p className="text-sm text-muted-foreground">{t("booking.trustConfirmDesc")}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="h-10 w-10 shrink-0 flex items-center justify-center bg-muted border border-border">
+                  <ShieldCheck className="h-5 w-5 text-foreground" />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">{t("booking.trustDriversTitle")}</p>
+                  <p className="text-sm text-muted-foreground">{t("booking.trustDriversDesc")}</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="h-10 w-10 shrink-0 flex items-center justify-center bg-muted border border-border">
+                  <BadgeDollarSign className="h-5 w-5 text-foreground" />
+                </div>
+                <div>
+                  <p className="font-medium text-foreground">{t("booking.trustPricingTitle")}</p>
+                  <p className="text-sm text-muted-foreground">{t("booking.trustPricingDesc")}</p>
                 </div>
               </div>
             </div>
