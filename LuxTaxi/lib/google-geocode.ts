@@ -22,6 +22,11 @@ export async function isAddressInOslo(address: string): Promise<boolean> {
 
   const data = await res.json();
   if (data.status !== "OK" || !data.results?.[0]) {
+    if (data.status === "REQUEST_DENIED") {
+      throw new Error(
+        "Google rejected the geocoding request — make sure the Geocoding API is enabled for this project, and that GOOGLE_MAPS_SERVER_API_KEY isn't restricted to only an HTTP referrer (server requests have none)."
+      );
+    }
     throw new Error(`Could not locate this address (${data.status}).`);
   }
 
