@@ -128,6 +128,8 @@ export function BookingForm() {
   const isMetered = vehicle !== "" && isMeteredVehicle(vehicle);
 
   // Calculate the live route once both distance-mode addresses are set.
+  // Debounced so typing (rather than picking a suggestion) doesn't fire a
+  // Directions request on every keystroke.
   useEffect(() => {
     if (rateType !== "distance" || !isMetered || !mapsLoaded || !pickup || !dropoff) {
       setRoute(null);
@@ -137,24 +139,27 @@ export function BookingForm() {
     }
     setRouteLoading(true);
     setRouteError(false);
-    const directionsService = new google.maps.DirectionsService();
-    directionsService.route(
-      { origin: pickup, destination: dropoff, travelMode: google.maps.TravelMode.DRIVING },
-      (result, status) => {
-        setRouteLoading(false);
-        if (status === "OK" && result) {
-          setDirections(result);
-          const leg = result.routes[0]?.legs[0];
-          if (leg?.distance && leg?.duration) {
-            setRoute({ distanceKm: leg.distance.value / 1000, durationMin: leg.duration.value / 60 });
+    const timeout = setTimeout(() => {
+      const directionsService = new google.maps.DirectionsService();
+      directionsService.route(
+        { origin: pickup, destination: dropoff, travelMode: google.maps.TravelMode.DRIVING },
+        (result, status) => {
+          setRouteLoading(false);
+          if (status === "OK" && result) {
+            setDirections(result);
+            const leg = result.routes[0]?.legs[0];
+            if (leg?.distance && leg?.duration) {
+              setRoute({ distanceKm: leg.distance.value / 1000, durationMin: leg.duration.value / 60 });
+            }
+          } else {
+            setDirections(null);
+            setRoute(null);
+            setRouteError(true);
           }
-        } else {
-          setDirections(null);
-          setRoute(null);
-          setRouteError(true);
         }
-      }
-    );
+      );
+    }, 600);
+    return () => clearTimeout(timeout);
   }, [pickup, dropoff, rateType, isMetered, mapsLoaded]);
 
   const estimatedFare = useMemo(() => {
@@ -724,8 +729,8 @@ export function BookingForm() {
                                 >
                                   <Input
                                     id="pickup"
-                                    defaultValue={pickup}
-                                    onBlur={(e) => setPickup(e.target.value)}
+                                    value={pickup}
+                                    onChange={(e) => setPickup(e.target.value)}
                                     placeholder={t("booking.pickupPlaceholder")}
                                     required
                                     className={inputClass}
@@ -757,8 +762,8 @@ export function BookingForm() {
                                 >
                                   <Input
                                     id="dropoff"
-                                    defaultValue={dropoff}
-                                    onBlur={(e) => setDropoff(e.target.value)}
+                                    value={dropoff}
+                                    onChange={(e) => setDropoff(e.target.value)}
                                     placeholder={t("booking.dropoffPlaceholder")}
                                     required
                                     className={inputClass}
