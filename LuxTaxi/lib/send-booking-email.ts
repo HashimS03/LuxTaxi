@@ -1,9 +1,12 @@
 import { Resend } from "resend";
 import type { BookingRequest, BookingSummaryRow } from "@/lib/booking-types";
 import { buildSummaryRows, vehicleLabels } from "@/lib/booking-summary";
+import type { FareResult } from "@/lib/compute-fare";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const OWNER_EMAIL = process.env.OWNER_EMAIL!;
+const FROM_ADDRESS = "bookings@oslolimousine.com";
+const REPLY_TO_ADDRESS = "theoslolimousine@gmail.com";
 
 function renderRows(rows: BookingSummaryRow[]) {
   return rows
@@ -19,17 +22,17 @@ function renderRows(rows: BookingSummaryRow[]) {
 
 export async function sendBookingEmails(
   booking: BookingRequest,
-  payment: { paid: true; amount: number } | { paid: false }
+  payment: { paid: true; fare: FareResult } | { paid: false; fare?: FareResult }
 ) {
   const { name, email, phone, vehicle, date, time, notes } = booking;
 
   const paymentRow: BookingSummaryRow = payment.paid
-    ? { label: "Payment", value: `Paid online (Stripe) — ${payment.amount.toLocaleString("nb-NO")} kr` }
+    ? { label: "Payment", value: `Paid online (Stripe) — ${payment.fare.amount.toLocaleString("nb-NO")} kr` }
     : { label: "Payment", value: "Pay later — to be invoiced before the ride" };
 
   const allRows = [
     { label: "Vehicle", value: vehicleLabels[vehicle] },
-    ...buildSummaryRows(booking, payment.paid ? payment.amount : booking.estimatedFare),
+    ...buildSummaryRows(booking, payment.paid ? payment.fare : payment.fare ?? booking.estimatedFare),
     { label: "Date", value: date },
     { label: "Time", value: time },
     paymentRow,
@@ -37,8 +40,9 @@ export async function sendBookingEmails(
   ];
 
   await resend.emails.send({
-    from: "Oslo Limousine Bookings <onboarding@resend.dev>",
+    from: `Oslo Limousine Bookings <${FROM_ADDRESS}>`,
     to: OWNER_EMAIL,
+    replyTo: REPLY_TO_ADDRESS,
     subject: `New Booking${payment.paid ? " (Paid)" : ""} from ${name}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #0b0e17; color: #d4dce8; padding: 32px; border-radius: 12px;">
@@ -69,8 +73,9 @@ export async function sendBookingEmails(
   });
 
   await resend.emails.send({
-    from: "Oslo Limousine <onboarding@resend.dev>",
+    from: `Oslo Limousine <${FROM_ADDRESS}>`,
     to: email,
+    replyTo: REPLY_TO_ADDRESS,
     subject: payment.paid
       ? "Your Oslo Limousine Booking is Confirmed"
       : "Your Oslo Limousine Booking Request Received",

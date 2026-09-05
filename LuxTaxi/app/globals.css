@@ -10,7 +10,7 @@
 
 @layer base {
   :root {
-    --background: 40 20% 96%;
+    --background: 38 20% 93%;
     --foreground: 220 20% 10%;
     --card: 0 0% 100%;
     --card-foreground: 220 20% 10%;
@@ -18,16 +18,19 @@
     --popover-foreground: 220 20% 10%;
     --primary: 220 20% 10%;
     --primary-foreground: 40 20% 96%;
-    --secondary: 40 10% 90%;
+    --secondary: 40 10% 88%;
     --secondary-foreground: 220 20% 15%;
-    --muted: 40 10% 92%;
+    --muted: 40 10% 90%;
     --muted-foreground: 220 10% 45%;
     --accent: 15 70% 50%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 40 15% 88%;
-    --input: 40 15% 88%;
+    --border: 40 15% 85%;
+    --input: 40 15% 85%;
+    /* A noticeably deeper warm tone for alternating section backgrounds,
+       so sections read as visually distinct instead of blending together. */
+    --surface-alt: 32 22% 87%;
     --ring: 220 20% 10%;
     --chart-1: 220 20% 10%;
     --chart-2: 15 70% 50%;

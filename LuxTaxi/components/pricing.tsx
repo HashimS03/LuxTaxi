@@ -135,6 +135,9 @@ export function Pricing() {
               {t("pricing.destinationNote")}
             </p>
             <p className="text-sm text-muted-foreground leading-relaxed">
+              {t("pricing.surchargeNote")}
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               {t("pricing.footnote")}
             </p>
           </div>

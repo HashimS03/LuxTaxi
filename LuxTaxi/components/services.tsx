@@ -23,7 +23,7 @@ export function Services() {
   const { t } = useLocale();
 
   return (
-    <section id="services" className="py-24 lg:py-32 bg-background">
+    <section id="services" className="py-24 lg:py-32 bg-surfaceAlt">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">

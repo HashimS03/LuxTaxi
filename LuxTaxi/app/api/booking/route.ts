@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendBookingEmails } from "@/lib/send-booking-email";
+import { computeServerFare, type FareResult } from "@/lib/compute-fare";
 import type { BookingRequest } from "@/lib/booking-types";
 
 export async function POST(request: Request) {
@@ -14,7 +15,17 @@ export async function POST(request: Request) {
       );
     }
 
-    await sendBookingEmails(body, { paid: false });
+    // Best-effort: an accurate, surcharge-aware fare for the email. No
+    // charge happens either way, so fall back to the client's own estimate
+    // if this can't be computed (e.g. an address that won't geocode).
+    let fare: FareResult | undefined;
+    try {
+      fare = await computeServerFare(body);
+    } catch {
+      fare = undefined;
+    }
+
+    await sendBookingEmails(body, { paid: false, fare });
 
     return NextResponse.json({ success: true });
   } catch (error) {
