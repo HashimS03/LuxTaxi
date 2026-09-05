@@ -746,8 +746,9 @@ export function BookingForm() {
                                   type="number"
                                   min={1}
                                   max={24}
-                                  value={hours}
-                                  onChange={(e) => setHours(Number(e.target.value) || 1)}
+                                  value={hours === 0 ? "" : hours}
+                                  onChange={(e) => setHours(e.target.value === "" ? 0 : Number(e.target.value))}
+                                  onBlur={() => setHours((h) => Math.min(24, Math.max(1, h || 1)))}
                                   required
                                   className={inputClass}
                                 />
