@@ -26,7 +26,7 @@ export default async function BookingSuccessPage({
 
   return (
     <main>
-      <Navbar transparent={false} />
+      <Navbar />
       <section className="pt-40 pb-24 lg:pb-32 bg-card min-h-screen">
         <div className="mx-auto max-w-2xl px-6 text-center">
           <div className="flex flex-col items-center gap-8">

@@ -3,40 +3,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useLocale } from "@/lib/locale-context";
 
 export function Hero() {
   const { t } = useLocale();
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <Image
-          src="/images/hero.jpg"
-          alt="Luxury limousine transport in Oslo"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground/75 via-foreground/40 to-foreground/5" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-background to-transparent" />
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 w-full">
-        <div className="max-w-2xl pt-32 pb-24 lg:pt-40 lg:pb-32">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-white/70 mb-6 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+    <section className="grid lg:grid-cols-2 lg:min-h-screen">
+      {/* Text panel — same surface as the rest of the site, no overlay needed */}
+      <div className="order-2 lg:order-1 flex items-center bg-background px-6 py-16 lg:px-16 lg:pt-24 lg:pb-24">
+        <div className="max-w-xl">
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-accent mb-6 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
             {t("hero.tagline")}
           </p>
 
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.1] tracking-tight text-white animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+          <h1 className="font-serif text-5xl md:text-6xl font-semibold leading-[1.1] tracking-tight text-foreground animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             {t("hero.title1")}
             <br />
             <span className="text-accent">{t("hero.title2")}</span>
           </h1>
 
-          <p className="mt-8 text-lg text-white/80 leading-relaxed max-w-xl animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
+          <p className="mt-8 text-lg text-muted-foreground leading-relaxed animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
             {t("hero.description")}
           </p>
 
@@ -51,7 +39,7 @@ export function Hero() {
               variant="outline"
               size="lg"
               asChild
-              className="text-base px-8 h-14 border-white/30 hover:bg-white/10 hover:border-white/60 transition-all duration-300"
+              className="text-base px-8 h-14 border-foreground/20 hover:bg-foreground/5 hover:border-foreground/40 transition-all duration-300"
             >
               <Link href="#fleet">{t("hero.explore")}</Link>
             </Button>
@@ -59,18 +47,15 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-fade-in" style={{ animationDelay: "0.6s" }}>
-        <Link
-          href="#fleet"
-          className="flex flex-col items-center gap-2 text-accent/80 hover:text-accent transition-colors duration-300 group"
-          aria-label="Scroll down to fleet section"
-        >
-          <span className="text-xs uppercase tracking-widest font-medium">
-            {t("hero.discover")}
-          </span>
-          <ArrowDown className="h-5 w-5 animate-bounce" />
-        </Link>
+      {/* Photo panel — full-bleed, untouched */}
+      <div className="order-1 lg:order-2 relative h-[45vh] lg:h-auto">
+        <Image
+          src="/images/hero.jpg"
+          alt="Luxury limousine transport in Oslo"
+          fill
+          className="object-cover"
+          priority
+        />
       </div>
     </section>
   );

@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer";
 export default function PricingPage() {
   return (
     <main>
-      <Navbar transparent={false} />
+      <Navbar />
       <Pricing />
       <Footer />
     </main>
