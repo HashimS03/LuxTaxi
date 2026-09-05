@@ -20,8 +20,8 @@ export function Hero() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-foreground/75 via-foreground/40 to-foreground/5" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-background to-transparent" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 w-full">
@@ -63,7 +63,7 @@ export function Hero() {
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-fade-in" style={{ animationDelay: "0.6s" }}>
         <Link
           href="#fleet"
-          className="flex flex-col items-center gap-2 text-white/70 hover:text-white transition-colors duration-300 group"
+          className="flex flex-col items-center gap-2 text-accent/80 hover:text-accent transition-colors duration-300 group"
           aria-label="Scroll down to fleet section"
         >
           <span className="text-xs uppercase tracking-widest font-medium">
