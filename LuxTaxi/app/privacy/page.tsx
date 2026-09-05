@@ -74,10 +74,16 @@ export default function PrivacyPage() {
                 any notes you provide.
               </li>
               <li>
-                <strong className="text-foreground">Payment data:</strong>{" "}
-                [if/when Stripe is enabled] card and billing details are
+                <strong className="text-foreground">Payment data:</strong> if
+                you choose to pay online, your card and billing details are
                 collected and processed directly by our payment provider,
                 Stripe — we do not store your full card details ourselves.
+              </li>
+              <li>
+                <strong className="text-foreground">Address & route data:</strong>{" "}
+                for distance-based bookings, the pickup and destination
+                addresses you enter are sent to Google Maps to show the route
+                and calculate distance-based pricing.
               </li>
               <li>
                 <strong className="text-foreground">
@@ -122,7 +128,12 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong className="text-foreground">Stripe</strong>, to
-                process payments [once enabled];
+                process online payments;
+              </li>
+              <li>
+                <strong className="text-foreground">Google Maps</strong>, to
+                geocode addresses, display the route, and calculate
+                distance-based pricing;
               </li>
               <li>
                 <strong className="text-foreground">[Hosting provider, e.g. Vercel]</strong>,

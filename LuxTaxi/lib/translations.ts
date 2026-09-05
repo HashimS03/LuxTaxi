@@ -83,10 +83,11 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.phonePlaceholder": "+1 (234) 567-890",
     "booking.vehicle": "Vehicle Type",
     "booking.vehiclePlaceholder": "Select a vehicle",
-    "booking.sedan": "Luxury Sedan (up to 4 passengers)",
-    "booking.van": "Luxury Van (up to 8 passengers)",
-    "booking.minibus": "Minibus (up to 15 passengers)",
-    "booking.custom": "Custom Order (16+ passengers)",
+    "booking.vehicleLuxury": "Luxury Sedan (up to 4 passengers)",
+    "booking.vehicleFour": "4 Seats — Sedan",
+    "booking.vehicleSeven": "7 Seats — Van",
+    "booking.vehicleSixteen": "16 Seats — Minibus",
+    "booking.vehicleSixteenPlus": "16+ Seats — Custom Quote",
     "booking.passengerCount": "Number of Passengers",
     "booking.passengerCountPlaceholder": "e.g. 25",
     "booking.pickup": "Pickup Location",
@@ -98,8 +99,51 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.notes": "Special Requests",
     "booking.notesPlaceholder":
       "Any special requirements, luggage details, or preferences...",
+
+    "booking.rateType": "How would you like to book?",
+    "booking.rateTypeFixed": "Fixed Price",
+    "booking.rateTypeFixedDesc": "Hourly charter or a Gardemoen Airport transfer",
+    "booking.rateTypeDistance": "Distance",
+    "booking.rateTypeDistanceDesc": "Enter pickup & destination, priced by route",
+
+    "booking.fixedOptionHourly": "Hourly Charter",
+    "booking.fixedOptionAirport": "Gardemoen Airport",
+    "booking.hoursLabel": "Duration (hours)",
+    "booking.hourlyAddressLabel": "Pickup Location",
+    "booking.airportDirection": "Direction",
+    "booking.airportFromAirport": "From Gardemoen to Oslo",
+    "booking.airportToAirport": "From Oslo to Gardemoen",
+    "booking.airportAddressLabel": "Address in Oslo",
+
+    "booking.mapPreview": "Route preview",
+    "booking.calculatingRoute": "Calculating your route…",
+    "booking.enterAddresses": "Enter both addresses to see live pricing.",
+    "booking.routeError":
+      "We couldn't calculate this route. Please check the addresses and try again.",
+    "booking.mapsUnavailable":
+      "Live map & distance pricing isn't available right now — enter your addresses and we'll confirm the exact price manually.",
+    "booking.distanceSummary": "Estimated distance",
+    "booking.durationSummary": "Estimated duration",
+
+    "booking.estimatedFare": "Estimated fare",
+    "booking.fixedFare": "Fixed fare",
+    "booking.fareEstimateNote":
+      "This is an estimate based on the route provided. The final fare may vary slightly with real traffic conditions.",
+    "booking.customQuoteNote":
+      "For 16+ passengers, we'll send you a custom quote after reviewing your request — no payment is needed now.",
+
+    "booking.paymentMethod": "Payment",
+    "booking.payNow": "Pay Now",
+    "booking.payNowDesc": "Secure card payment, confirmed instantly",
+    "booking.payLater": "Pay Later",
+    "booking.payLaterDesc": "We'll invoice you before the ride, per our booking policy",
+    "booking.payNowCta": "Pay & Book",
+    "booking.paymentCancelled":
+      "Your payment was cancelled. You can try again, or choose to pay later instead.",
+
     "booking.submit": "Request Booking",
     "booking.sending": "Sending Request...",
+    "booking.redirecting": "Redirecting to secure payment…",
     "booking.errorGeneric":
       "Something went wrong. Please try again or contact us directly.",
     "booking.submitNote":
@@ -271,10 +315,11 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.phonePlaceholder": "+47 123 45 678",
     "booking.vehicle": "Kjøretøytype",
     "booking.vehiclePlaceholder": "Velg et kjøretøy",
-    "booking.sedan": "Luksus Sedan (opptil 4 passasjerer)",
-    "booking.van": "Luksus Van (opptil 8 passasjerer)",
-    "booking.minibus": "Minibuss (opptil 15 passasjerer)",
-    "booking.custom": "Spesialbestilling (16+ passasjerer)",
+    "booking.vehicleLuxury": "Luksus Sedan (opptil 4 passasjerer)",
+    "booking.vehicleFour": "4 Seter — Sedan",
+    "booking.vehicleSeven": "7 Seter — Van",
+    "booking.vehicleSixteen": "16 Seter — Minibuss",
+    "booking.vehicleSixteenPlus": "16+ Seter — Tilbud på Forespørsel",
     "booking.passengerCount": "Antall Passasjerer",
     "booking.passengerCountPlaceholder": "f.eks. 25",
     "booking.pickup": "Hentested",
@@ -286,8 +331,51 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.notes": "Spesielle Ønsker",
     "booking.notesPlaceholder":
       "Eventuelle spesielle krav, bagasjedetaljer eller preferanser...",
+
+    "booking.rateType": "Hvordan vil du bestille?",
+    "booking.rateTypeFixed": "Fast Pris",
+    "booking.rateTypeFixedDesc": "Timesleie eller fast Gardemoen-transport",
+    "booking.rateTypeDistance": "Distanse",
+    "booking.rateTypeDistanceDesc": "Oppgi hente- og leveringssted, pris basert på rute",
+
+    "booking.fixedOptionHourly": "Timesleie",
+    "booking.fixedOptionAirport": "Gardemoen",
+    "booking.hoursLabel": "Varighet (timer)",
+    "booking.hourlyAddressLabel": "Hentested",
+    "booking.airportDirection": "Retning",
+    "booking.airportFromAirport": "Fra Gardemoen til Oslo",
+    "booking.airportToAirport": "Fra Oslo til Gardemoen",
+    "booking.airportAddressLabel": "Adresse i Oslo",
+
+    "booking.mapPreview": "Forhåndsvisning av rute",
+    "booking.calculatingRoute": "Beregner ruten din…",
+    "booking.enterAddresses": "Oppgi begge adresser for å se pris fortløpende.",
+    "booking.routeError":
+      "Vi klarte ikke å beregne denne ruten. Sjekk adressene og prøv igjen.",
+    "booking.mapsUnavailable":
+      "Kart og distansepris er ikke tilgjengelig akkurat nå — oppgi adressene dine, så bekrefter vi nøyaktig pris manuelt.",
+    "booking.distanceSummary": "Estimert distanse",
+    "booking.durationSummary": "Estimert varighet",
+
+    "booking.estimatedFare": "Estimert pris",
+    "booking.fixedFare": "Fast pris",
+    "booking.fareEstimateNote":
+      "Dette er et estimat basert på oppgitt rute. Endelig pris kan variere noe med faktiske trafikkforhold.",
+    "booking.customQuoteNote":
+      "For 16+ passasjerer sender vi deg et tilbud etter å ha sett på forespørselen din — ingen betaling nå.",
+
+    "booking.paymentMethod": "Betaling",
+    "booking.payNow": "Betal Nå",
+    "booking.payNowDesc": "Sikker kortbetaling, bekreftet umiddelbart",
+    "booking.payLater": "Betal Senere",
+    "booking.payLaterDesc": "Vi fakturerer deg før turen, i henhold til vår bestillingspolicy",
+    "booking.payNowCta": "Betal og Bestill",
+    "booking.paymentCancelled":
+      "Betalingen din ble avbrutt. Du kan prøve igjen, eller velge å betale senere i stedet.",
+
     "booking.submit": "Send Bestilling",
     "booking.sending": "Sender Forespørsel...",
+    "booking.redirecting": "Videresender til sikker betaling…",
     "booking.errorGeneric":
       "Noe gikk galt. Vennligst prøv igjen eller kontakt oss direkte.",
     "booking.submitNote":

@@ -4,28 +4,7 @@ import Link from "next/link";
 import { Car, Users, ArrowRight, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/lib/locale-context";
-
-type MeteredVehicle = {
-  key: "luxury" | "four" | "seven" | "sixteen";
-  baseFare: number;
-  perKm: number;
-  perMinute: number;
-  minFare: number;
-  hourly: number;
-  airport: number;
-  airportNote?: true;
-};
-
-const meteredVehicles: MeteredVehicle[] = [
-  { key: "luxury", baseFare: 189, perKm: 22, perMinute: 10, minFare: 690, hourly: 1090, airport: 1850 },
-  { key: "four", baseFare: 149, perKm: 20, perMinute: 9, minFare: 590, hourly: 900, airport: 1350 },
-  { key: "seven", baseFare: 199, perKm: 33, perMinute: 10, minFare: 790, hourly: 1290, airport: 2150 },
-  { key: "sixteen", baseFare: 249, perKm: 55, perMinute: 15, minFare: 990, hourly: 1590, airport: 2990, airportNote: true },
-];
-
-function kr(amount: number) {
-  return `${amount.toLocaleString("nb-NO")} kr`;
-}
+import { meteredVehicleKeys, vehicleRates, kr } from "@/lib/pricing";
 
 export function Pricing() {
   const { t } = useLocale();
@@ -48,7 +27,9 @@ export function Pricing() {
 
         {/* Metered Vehicle Cards */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {meteredVehicles.map((vehicle) => (
+          {meteredVehicleKeys.map((key) => {
+            const vehicle = vehicleRates[key];
+            return (
             <div
               key={vehicle.key}
               className="flex flex-col bg-card border border-border overflow-hidden transition-all duration-500 hover:border-foreground/20 hover:shadow-lg"
@@ -117,7 +98,8 @@ export function Pricing() {
                 </Button>
               </div>
             </div>
-          ))}
+            );
+          })}
 
           {/* 16+ Custom Card */}
           <div className="flex flex-col bg-background border-2 border-dashed border-border p-8 transition-all duration-300 hover:border-accent/50">

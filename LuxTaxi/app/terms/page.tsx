@@ -105,22 +105,36 @@ export default function TermsPage() {
               Norwegian kroner (NOK) and include VAT unless stated otherwise.
             </p>
             <p>
-              Payment must be completed at least 5 hours before your
-              scheduled ride[, using our online payment provider, Stripe —
-              pending confirmation of final payment flow]. [Describe accepted
-              payment methods and whether a deposit or full fare is charged
-              at booking.]
+              At the time of booking, you may choose to{" "}
+              <strong className="text-foreground">pay online</strong> via our
+              payment processor, Stripe, or to{" "}
+              <strong className="text-foreground">pay later</strong>, in
+              which case payment must be completed at least 5 hours before
+              your scheduled ride. For fixed-price bookings (hourly charters
+              and Gardemoen Airport transfers) the exact fare is charged. For
+              distance-based bookings, the fare shown and charged at booking
+              is an estimate calculated from the pickup and destination you
+              provide; the final fare may be adjusted afterward if the actual
+              route or waiting time differs materially, and we will contact
+              you before charging any additional amount.
             </p>
           </Section>
 
           <Section title="5. Cancellations, Changes & No-Shows">
             <p>
-              [Placeholder — needs your cancellation policy, e.g.: Cancellations
-              made more than 24 hours before pickup are free of charge.
-              Cancellations made within 24 hours may be charged [X]% of the
-              fare. A no-show, or failure to be reachable at the pickup
-              location for more than [X] minutes, may be charged the full
-              fare.]
+              Cancellations made more than 24 hours before the scheduled
+              pickup time are free of charge, including a full refund of any
+              online payment. Cancellations made within 24 hours of pickup
+              may be charged{" "}
+              <strong className="text-foreground">
+                [cancellation fee — e.g. 50% of the fare — confirm exact
+                percentage]
+              </strong>
+              . A no-show, or failure to be reachable at the pickup location
+              for more than{" "}
+              <strong className="text-foreground">[X — e.g. 15]</strong>{" "}
+              minutes, may be charged the full fare. To cancel or change a
+              booking, contact us using the details in Section 11.
             </p>
           </Section>
 
