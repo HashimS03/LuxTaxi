@@ -35,7 +35,7 @@ export function Footer() {
                 <ul className="flex flex-col gap-4">
                   <li>
                     <Link
-                      href="#fleet"
+                      href="/#fleet"
                       className="text-background/70 hover:text-background transition-colors duration-300 flex items-center gap-1 group"
                     >
                       {t("nav.fleet")}
@@ -44,19 +44,28 @@ export function Footer() {
                   </li>
                   <li>
                     <Link
-                      href="#booking"
+                      href="/#services"
                       className="text-background/70 hover:text-background transition-colors duration-300 flex items-center gap-1 group"
                     >
-                      {t("nav.book")}
+                      {t("nav.services")}
                       <ArrowUpRight className="h-3 w-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="#services"
+                      href="/pricing"
                       className="text-background/70 hover:text-background transition-colors duration-300 flex items-center gap-1 group"
                     >
-                      {t("nav.services")}
+                      {t("nav.pricing")}
+                      <ArrowUpRight className="h-3 w-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/#booking"
+                      className="text-background/70 hover:text-background transition-colors duration-300 flex items-center gap-1 group"
+                    >
+                      {t("nav.book")}
                       <ArrowUpRight className="h-3 w-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300" />
                     </Link>
                   </li>
@@ -130,13 +139,13 @@ export function Footer() {
             </p>
             <div className="flex gap-8">
               <Link
-                href="#"
+                href="/privacy"
                 className="text-xs text-background/40 hover:text-background/70 transition-colors duration-300"
               >
                 {t("footer.privacy")}
               </Link>
               <Link
-                href="#"
+                href="/terms"
                 className="text-xs text-background/40 hover:text-background/70 transition-colors duration-300"
               >
                 {t("footer.terms")}
