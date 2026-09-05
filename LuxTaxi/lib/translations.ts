@@ -6,6 +6,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     "nav.fleet": "Our Fleet",
     "nav.book": "Book Now",
     "nav.services": "Services",
+    "nav.pricing": "Pricing",
     "nav.contact": "Contact",
     "nav.bookRide": "Book a Ride",
 
@@ -144,6 +145,40 @@ export const translations: Record<Locale, Record<string, string>> = {
     "services.vipDesc":
       "Discreet, secure transport with trained professionals for high-profile clients.",
 
+    // Pricing
+    "pricing.tagline": "Pricing",
+    "pricing.title": "Transparent, upfront pricing",
+    "pricing.description":
+      "Metered rates apply to standard rides. Hourly charters and Gardemoen Airport transfers are available at a fixed price.",
+    "pricing.baseFare": "Base fare",
+    "pricing.perKm": "Price per km",
+    "pricing.perMinute": "Price per minute",
+    "pricing.minFare": "Minimum fare",
+    "pricing.fixedTitle": "Fixed prices",
+    "pricing.hourly": "Hourly rate",
+    "pricing.airport": "Gardemoen — fixed, one-way to Oslo",
+    "pricing.luxury.name": "Luxury Sedan",
+    "pricing.luxury.desc": "Our flagship executive sedan for VIP travel.",
+    "pricing.four.name": "4 Seats",
+    "pricing.four.desc": "Standard sedan for everyday rides and airport transfers.",
+    "pricing.seven.name": "7 Seats",
+    "pricing.seven.desc": "Spacious van for groups and families.",
+    "pricing.sixteen.name": "16 Seats",
+    "pricing.sixteen.desc": "Minibus for larger groups, weddings, and corporate shuttles.",
+    "pricing.sixteen.airportNote":
+      "Up to 2,990 kr — adjusted based on the number of passengers.",
+    "pricing.sixteenPlus.name": "16+ Seats",
+    "pricing.sixteenPlus.desc":
+      "Custom multi-vehicle or coach solutions for large groups.",
+    "pricing.sixteenPlus.note":
+      "We'll send you a price based on your number of passengers.",
+    "pricing.destinationNote":
+      "If your trip starts at Gardemoen and continues beyond Oslo, the price will be adjusted based on your destination.",
+    "pricing.cta": "Book This Vehicle",
+    "pricing.customCta": "Request a Custom Quote",
+    "pricing.footnote":
+      "All prices are in Norwegian kroner (NOK) and include VAT. Final fares for metered rides are calculated automatically based on actual distance and time.",
+
     // Footer
     "footer.description":
       "Premium transport services for discerning clients. Experience the pinnacle of comfort and reliability.",
@@ -159,6 +194,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     "nav.fleet": "Vår Flåte",
     "nav.book": "Bestill Nå",
     "nav.services": "Tjenester",
+    "nav.pricing": "Priser",
     "nav.contact": "Kontakt",
     "nav.bookRide": "Bestill en Tur",
 
@@ -296,6 +332,40 @@ export const translations: Record<Locale, Record<string, string>> = {
     "services.vip": "VIP & Sikkerhet",
     "services.vipDesc":
       "Diskret, sikker transport med trente profesjonelle for profilerte kunder.",
+
+    // Pricing
+    "pricing.tagline": "Priser",
+    "pricing.title": "Åpne priser, ingen overraskelser",
+    "pricing.description":
+      "Målt pris gjelder for vanlige turer. Timesleie og faste Gardemoen-transporter tilbys til fast pris.",
+    "pricing.baseFare": "Grunnpris",
+    "pricing.perKm": "Pris per km",
+    "pricing.perMinute": "Pris per minutt",
+    "pricing.minFare": "Minimum pris",
+    "pricing.fixedTitle": "Fast pris",
+    "pricing.hourly": "Timepris",
+    "pricing.airport": "Gardemoen — fast pris, Gardemoen–Oslo",
+    "pricing.luxury.name": "Luksus Biler",
+    "pricing.luxury.desc": "Vår fremste eksekutive sedan for VIP-transport.",
+    "pricing.four.name": "4 Seter",
+    "pricing.four.desc": "Standard sedan for hverdagsturer og flyplasstransport.",
+    "pricing.seven.name": "7 Seter",
+    "pricing.seven.desc": "Romslig van for grupper og familier.",
+    "pricing.sixteen.name": "16 Seter",
+    "pricing.sixteen.desc": "Minibuss for større grupper, bryllup og bedriftsturer.",
+    "pricing.sixteen.airportNote":
+      "Maks 2 990 kr — blir justert basert på antall passasjerer.",
+    "pricing.sixteenPlus.name": "16+ Seter",
+    "pricing.sixteenPlus.desc":
+      "Skreddersydde løsninger med flere kjøretøy eller busser for store grupper.",
+    "pricing.sixteenPlus.note":
+      "Vi sender deg pris basert på antall kunder.",
+    "pricing.destinationNote":
+      "Dersom turen starter fra Gardemoen og fortsetter forbi Oslo, vil prisen justeres basert på destinasjonen.",
+    "pricing.cta": "Bestill Dette Kjøretøyet",
+    "pricing.customCta": "Be Om Tilbud",
+    "pricing.footnote":
+      "Alle priser er i norske kroner (NOK) og inkluderer mva. Endelig pris for målte turer beregnes automatisk basert på faktisk distanse og tid.",
 
     // Footer
     "footer.description":
