@@ -4,6 +4,8 @@ import { buildSummaryRows, vehicleLabels } from "@/lib/booking-summary";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const OWNER_EMAIL = process.env.OWNER_EMAIL!;
+const FROM_ADDRESS = "bookings@oslolimousine.com";
+const REPLY_TO_ADDRESS = "theoslolimousine@gmail.com";
 
 function renderRows(rows: BookingSummaryRow[]) {
   return rows
@@ -37,8 +39,9 @@ export async function sendBookingEmails(
   ];
 
   await resend.emails.send({
-    from: "Oslo Limousine Bookings <onboarding@resend.dev>",
+    from: `Oslo Limousine Bookings <${FROM_ADDRESS}>`,
     to: OWNER_EMAIL,
+    replyTo: REPLY_TO_ADDRESS,
     subject: `New Booking${payment.paid ? " (Paid)" : ""} from ${name}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #0b0e17; color: #d4dce8; padding: 32px; border-radius: 12px;">
@@ -69,8 +72,9 @@ export async function sendBookingEmails(
   });
 
   await resend.emails.send({
-    from: "Oslo Limousine <onboarding@resend.dev>",
+    from: `Oslo Limousine <${FROM_ADDRESS}>`,
     to: email,
+    replyTo: REPLY_TO_ADDRESS,
     subject: payment.paid
       ? "Your Oslo Limousine Booking is Confirmed"
       : "Your Oslo Limousine Booking Request Received",
