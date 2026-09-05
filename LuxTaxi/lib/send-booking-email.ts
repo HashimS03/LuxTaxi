@@ -8,16 +8,41 @@ const OWNER_EMAIL = process.env.OWNER_EMAIL!;
 const FROM_ADDRESS = "bookings@oslolimousine.com";
 const REPLY_TO_ADDRESS = "theoslolimousine@gmail.com";
 
+// Mirrors the site's own palette (app/globals.css) so the emails feel like
+// part of the same brand instead of a generic transactional template.
+const COLOR = {
+  page: "#F4EFE6", // --background
+  card: "#FFFFFF", // --card
+  border: "#E6DECF", // --border
+  divider: "#EFE9DE",
+  foreground: "#1A1D24", // --foreground
+  muted: "#6B7280", // --muted-foreground
+  mutedSoft: "#9CA3AF",
+  accent: "#D9622B", // --accent
+  accentSoft: "rgba(217, 98, 43, 0.12)",
+};
+
+const SERIF = "Georgia, 'Times New Roman', Times, serif";
+const SANS = "Arial, Helvetica, sans-serif";
+
 function renderRows(rows: BookingSummaryRow[]) {
   return rows
     .map(
       (row) => `
       <tr>
-        <td style="padding: 8px 0; color: #6b7a8d; width: 160px; vertical-align: top;">${row.label}:</td>
-        <td style="padding: 8px 0; color: #d4dce8;">${row.value}</td>
+        <td style="padding: 10px 0; border-bottom: 1px solid ${COLOR.divider}; color: ${COLOR.muted}; width: 150px; font-size: 14px; vertical-align: top;">${row.label}</td>
+        <td style="padding: 10px 0; border-bottom: 1px solid ${COLOR.divider}; color: ${COLOR.foreground}; font-size: 14px;">${row.value}</td>
       </tr>`
     )
     .join("");
+}
+
+function eyebrow(text: string) {
+  return `<p style="color: ${COLOR.accent}; font-size: 11px; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 16px;">${text}</p>`;
+}
+
+function card(inner: string, extra = "") {
+  return `<div style="background-color: ${COLOR.card}; border: 1px solid ${COLOR.border}; border-radius: 6px; padding: 24px; ${extra}">${inner}</div>`;
 }
 
 export async function sendBookingEmails(
@@ -45,27 +70,31 @@ export async function sendBookingEmails(
     replyTo: REPLY_TO_ADDRESS,
     subject: `New Booking${payment.paid ? " (Paid)" : ""} from ${name}`,
     html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #0b0e17; color: #d4dce8; padding: 32px; border-radius: 12px;">
+      <div style="font-family: ${SANS}; max-width: 600px; margin: 0 auto; background-color: ${COLOR.page}; color: ${COLOR.foreground}; padding: 40px 32px;">
+        <div style="height: 4px; width: 48px; background-color: ${COLOR.accent}; border-radius: 2px; margin: 0 auto 28px;"></div>
+
         <div style="text-align: center; margin-bottom: 32px;">
-          <h1 style="color: #1cc9d4; font-size: 28px; margin: 0;">Oslo Limousine</h1>
-          <p style="color: #6b7a8d; font-size: 14px; margin-top: 4px;">New Booking Request</p>
+          <p style="color: ${COLOR.accent}; font-size: 11px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; margin: 0 0 10px;">New Booking Request</p>
+          <h1 style="font-family: ${SERIF}; color: ${COLOR.foreground}; font-size: 26px; font-weight: 600; margin: 0;">Oslo Limousine</h1>
         </div>
 
-        <div style="background-color: #131826; padding: 24px; border-radius: 8px; border: 1px solid #1e2640;">
-          <h2 style="color: #1cc9d4; font-size: 18px; margin-top: 0;">Customer Details</h2>
+        ${card(`
+          ${eyebrow("Customer Details")}
           <table style="width: 100%; border-collapse: collapse;">
-            <tr><td style="padding: 8px 0; color: #6b7a8d; width: 160px;">Name:</td><td style="padding: 8px 0; color: #d4dce8;">${name}</td></tr>
-            <tr><td style="padding: 8px 0; color: #6b7a8d;">Email:</td><td style="padding: 8px 0; color: #d4dce8;">${email}</td></tr>
-            <tr><td style="padding: 8px 0; color: #6b7a8d;">Phone:</td><td style="padding: 8px 0; color: #d4dce8;">${phone}</td></tr>
+            <tr><td style="padding: 10px 0; border-bottom: 1px solid ${COLOR.divider}; color: ${COLOR.muted}; width: 150px; font-size: 14px;">Name</td><td style="padding: 10px 0; border-bottom: 1px solid ${COLOR.divider}; color: ${COLOR.foreground}; font-size: 14px;">${name}</td></tr>
+            <tr><td style="padding: 10px 0; border-bottom: 1px solid ${COLOR.divider}; color: ${COLOR.muted}; font-size: 14px;">Email</td><td style="padding: 10px 0; border-bottom: 1px solid ${COLOR.divider}; color: ${COLOR.foreground}; font-size: 14px;">${email}</td></tr>
+            <tr><td style="padding: 10px 0; color: ${COLOR.muted}; font-size: 14px;">Phone</td><td style="padding: 10px 0; color: ${COLOR.foreground}; font-size: 14px;">${phone}</td></tr>
           </table>
-        </div>
+        `)}
 
-        <div style="background-color: #131826; padding: 24px; border-radius: 8px; border: 1px solid #1e2640; margin-top: 16px;">
-          <h2 style="color: #1cc9d4; font-size: 18px; margin-top: 0;">Trip Details</h2>
+        <div style="height: 16px;"></div>
+
+        ${card(`
+          ${eyebrow("Trip Details")}
           <table style="width: 100%; border-collapse: collapse;">${renderRows(allRows)}</table>
-        </div>
+        `)}
 
-        <p style="color: #6b7a8d; font-size: 12px; text-align: center; margin-top: 24px;">
+        <p style="color: ${COLOR.muted}; font-size: 12px; text-align: center; margin-top: 28px;">
           Please respond to this booking request as soon as possible.
         </p>
       </div>
@@ -80,54 +109,59 @@ export async function sendBookingEmails(
       ? "Your Oslo Limousine Booking is Confirmed"
       : "Your Oslo Limousine Booking Request Received",
     html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #0b0e17; color: #d4dce8; padding: 32px; border-radius: 12px;">
-        <div style="text-align: center; margin-bottom: 32px;">
-          <h1 style="color: #1cc9d4; font-size: 28px; margin: 0;">Oslo Limousine</h1>
-          <p style="color: #6b7a8d; font-size: 14px; margin-top: 4px;">Premium Transport Services</p>
+      <div style="font-family: ${SANS}; max-width: 600px; margin: 0 auto; background-color: ${COLOR.page}; color: ${COLOR.foreground}; padding: 40px 32px;">
+        <div style="height: 4px; width: 48px; background-color: ${COLOR.accent}; border-radius: 2px; margin: 0 auto 28px;"></div>
+
+        <div style="text-align: center; margin-bottom: 4px;">
+          <h1 style="font-family: ${SERIF}; color: ${COLOR.foreground}; font-size: 24px; font-weight: 600; margin: 0 0 6px;">Oslo Limousine</h1>
+          <p style="color: ${COLOR.muted}; font-size: 11px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; margin: 0;">Premium Transport Services</p>
         </div>
 
-        <div style="text-align: center; margin-bottom: 32px;">
-          <div style="display: inline-block; background-color: rgba(28, 201, 212, 0.1); border-radius: 50%; padding: 16px; margin-bottom: 16px;">
-            <span style="font-size: 32px;">&#10003;</span>
+        <div style="text-align: center; margin: 32px 0 28px;">
+          <div style="display: inline-block; width: 56px; height: 56px; line-height: 56px; background-color: ${COLOR.accentSoft}; border-radius: 50%; text-align: center; margin-bottom: 16px;">
+            <span style="font-size: 24px; color: ${COLOR.accent};">&#10003;</span>
           </div>
-          <h2 style="color: #ffffff; font-size: 22px; margin: 0;">Thank you, ${name}!</h2>
-          <p style="color: #6b7a8d; margin-top: 8px;">
+          <h2 style="font-family: ${SERIF}; color: ${COLOR.foreground}; font-size: 22px; font-weight: 600; margin: 0 0 8px;">Thank you, ${name}!</h2>
+          <p style="color: ${COLOR.muted}; font-size: 14px; line-height: 1.6; margin: 0 auto; max-width: 380px;">
             ${payment.paid ? "Your payment was received and your ride is booked." : "We have received your booking request."}
           </p>
         </div>
 
-        <div style="background-color: #131826; padding: 24px; border-radius: 8px; border: 1px solid #1e2640;">
-          <h3 style="color: #1cc9d4; font-size: 16px; margin-top: 0;">Your Trip Summary</h3>
+        ${card(`
+          ${eyebrow("Your Trip Summary")}
           <table style="width: 100%; border-collapse: collapse;">${renderRows(allRows)}</table>
-        </div>
+        `)}
 
-        <div style="text-align: center; margin-top: 24px; padding: 20px; background-color: #131826; border-radius: 8px; border: 1px solid #1e2640;">
-          <p style="color: #d4dce8; margin: 0; font-size: 15px;">
+        <div style="height: 16px;"></div>
+
+        ${card(
+          `<p style="color: ${COLOR.foreground}; font-size: 14px; line-height: 1.6; margin: 0; text-align: center;">
             ${
               payment.paid
                 ? "Our team will confirm your chauffeur details closer to your ride."
-                : "Our team will review your request and get back to you <strong style=\"color: #1cc9d4;\">within 30 minutes</strong> during business hours."
+                : `Our team will review your request and get back to you <strong style="color: ${COLOR.accent};">within 30 minutes</strong> during business hours.`
             }
-          </p>
-        </div>
+          </p>`
+        )}
 
         ${
           payment.paid
             ? ""
-            : `<div style="margin-top: 16px; padding: 20px; background-color: #1a1f2e; border-radius: 8px; border: 1px solid #2a3548;">
-                <h3 style="color: #f5a623; font-size: 14px; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">Important Information</h3>
-                <ul style="color: #d4dce8; font-size: 14px; margin: 0; padding-left: 20px; line-height: 1.8;">
+            : `<div style="height: 16px;"></div>
+              ${card(`
+                <p style="color: ${COLOR.accent}; font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px;">Important Information</p>
+                <ul style="color: ${COLOR.foreground}; font-size: 13px; margin: 0; padding-left: 18px; line-height: 1.9;">
                   <li>Bookings must be made at least <strong>24 hours</strong> before the scheduled ride.</li>
                   <li>Payment must be completed at least <strong>5 hours</strong> before your ride.</li>
                 </ul>
-              </div>`
+              `)}`
         }
 
-        <div style="text-align: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid #1e2640;">
-          <p style="color: #6b7a8d; font-size: 13px; margin: 0;">
-            If you have any urgent questions, call us at <a href="tel:+4748420389" style="color: #1cc9d4; text-decoration: none;">+47 484 20 389</a>
+        <div style="text-align: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid ${COLOR.border};">
+          <p style="color: ${COLOR.muted}; font-size: 13px; margin: 0;">
+            If you have any urgent questions, call us at <a href="tel:+4748420389" style="color: ${COLOR.accent}; text-decoration: none; font-weight: bold;">+47 484 20 389</a>
           </p>
-          <p style="color: #3d4a5c; font-size: 11px; margin-top: 12px;">
+          <p style="color: ${COLOR.mutedSoft}; font-size: 11px; margin-top: 12px;">
             &copy; ${new Date().getFullYear()} Oslo Limousine. All rights reserved.
           </p>
         </div>
