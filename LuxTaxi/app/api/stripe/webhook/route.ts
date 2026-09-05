@@ -52,9 +52,14 @@ export async function POST(request: Request) {
         notes: m.notes || undefined,
       };
       const amount = Number(m.amountKr) || (session.amount_total ?? 0) / 100;
+      const fare = {
+        amount,
+        surchargeLabel: m.surchargeLabel || null,
+        distanceFallback: m.distanceFallback === "true",
+      };
 
       try {
-        await sendBookingEmails(booking, { paid: true, amount });
+        await sendBookingEmails(booking, { paid: true, fare });
       } catch (err) {
         console.error("Failed to send paid-booking confirmation emails:", err);
       }

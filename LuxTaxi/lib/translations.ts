@@ -114,6 +114,10 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.airportFromAirport": "From Gardemoen to Oslo",
     "booking.airportToAirport": "From Oslo to Gardemoen",
     "booking.airportAddressLabel": "Address in Oslo",
+    "booking.airportOutsideOsloNote":
+      "The fixed rate applies to trips within Oslo. If this address is outside Oslo, distance-based pricing applies automatically.",
+    "booking.surchargeWeekend": "Weekend surcharge (+15%)",
+    "booking.surchargeHoliday": "Public holiday surcharge (+40%)",
 
     "booking.mapPreview": "Route preview",
     "booking.calculatingRoute": "Calculating your route…",
@@ -217,7 +221,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     "pricing.sixteenPlus.note":
       "We'll send you a price based on your number of passengers.",
     "pricing.destinationNote":
-      "If your trip starts at Gardemoen and continues beyond Oslo, the price will be adjusted based on your destination.",
+      "The fixed Gardemoen rate applies to trips within Oslo. If your trip starts at Gardemoen and continues beyond Oslo, the price is calculated by distance instead.",
+    "pricing.surchargeNote":
+      "A 15% surcharge applies on weekends, and a 40% surcharge applies on Norwegian public holidays (røde dager).",
     "pricing.cta": "Book This Vehicle",
     "pricing.customCta": "Request a Custom Quote",
     "pricing.footnote":
@@ -346,6 +352,10 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.airportFromAirport": "Fra Gardemoen til Oslo",
     "booking.airportToAirport": "Fra Oslo til Gardemoen",
     "booking.airportAddressLabel": "Adresse i Oslo",
+    "booking.airportOutsideOsloNote":
+      "Fastprisen gjelder for turer innenfor Oslo. Hvis denne adressen er utenfor Oslo, blir prisen automatisk basert på distanse.",
+    "booking.surchargeWeekend": "Helgetillegg (+15%)",
+    "booking.surchargeHoliday": "Tillegg for røde dager (+40%)",
 
     "booking.mapPreview": "Forhåndsvisning av rute",
     "booking.calculatingRoute": "Beregner ruten din…",
@@ -449,7 +459,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     "pricing.sixteenPlus.note":
       "Vi sender deg pris basert på antall kunder.",
     "pricing.destinationNote":
-      "Dersom turen starter fra Gardemoen og fortsetter forbi Oslo, vil prisen justeres basert på destinasjonen.",
+      "Fastprisen til/fra Gardemoen gjelder for turer innenfor Oslo. Dersom turen starter fra Gardemoen og fortsetter forbi Oslo, beregnes prisen basert på distanse i stedet.",
+    "pricing.surchargeNote":
+      "Det tilkommer 15% tillegg i helger, og 40% tillegg på norske røde dager.",
     "pricing.cta": "Bestill Dette Kjøretøyet",
     "pricing.customCta": "Be Om Tilbud",
     "pricing.footnote":

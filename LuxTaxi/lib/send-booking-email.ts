@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import type { BookingRequest, BookingSummaryRow } from "@/lib/booking-types";
 import { buildSummaryRows, vehicleLabels } from "@/lib/booking-summary";
+import type { FareResult } from "@/lib/compute-fare";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const OWNER_EMAIL = process.env.OWNER_EMAIL!;
@@ -21,17 +22,17 @@ function renderRows(rows: BookingSummaryRow[]) {
 
 export async function sendBookingEmails(
   booking: BookingRequest,
-  payment: { paid: true; amount: number } | { paid: false }
+  payment: { paid: true; fare: FareResult } | { paid: false; fare?: FareResult }
 ) {
   const { name, email, phone, vehicle, date, time, notes } = booking;
 
   const paymentRow: BookingSummaryRow = payment.paid
-    ? { label: "Payment", value: `Paid online (Stripe) — ${payment.amount.toLocaleString("nb-NO")} kr` }
+    ? { label: "Payment", value: `Paid online (Stripe) — ${payment.fare.amount.toLocaleString("nb-NO")} kr` }
     : { label: "Payment", value: "Pay later — to be invoiced before the ride" };
 
   const allRows = [
     { label: "Vehicle", value: vehicleLabels[vehicle] },
-    ...buildSummaryRows(booking, payment.paid ? payment.amount : booking.estimatedFare),
+    ...buildSummaryRows(booking, payment.paid ? payment.fare : payment.fare ?? booking.estimatedFare),
     { label: "Date", value: date },
     { label: "Time", value: time },
     paymentRow,

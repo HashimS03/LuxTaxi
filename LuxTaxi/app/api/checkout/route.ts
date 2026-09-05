@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const amountKr = await computeServerFare(body);
+    const fare = await computeServerFare(body);
     const origin = request.headers.get("origin") || new URL(request.url).origin;
 
     const session = await stripe.checkout.sessions.create({
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
         {
           price_data: {
             currency: "nok",
-            unit_amount: Math.round(amountKr * 100),
+            unit_amount: Math.round(fare.amount * 100),
             product_data: {
               name: `Oslo Limousine — ${vehicleLabels[vehicle]}`,
               description: `Booking for ${date} at ${time}`,
@@ -62,7 +62,9 @@ export async function POST(request: Request) {
         date,
         time,
         notes: truncate(body.notes, 490),
-        amountKr: String(amountKr),
+        amountKr: String(fare.amount),
+        surchargeLabel: fare.surchargeLabel ?? "",
+        distanceFallback: fare.distanceFallback ? "true" : "",
       },
     });
 

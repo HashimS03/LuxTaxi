@@ -42,7 +42,6 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import {
-  meteredVehicleKeys,
   isMeteredVehicle,
   calculateHourlyFare,
   calculateDistanceFare,
@@ -50,6 +49,7 @@ import {
   kr,
   type MeteredVehicleKey,
 } from "@/lib/pricing";
+import { getPriceMultiplier, getSurchargeType } from "@/lib/norway-holidays";
 import type {
   VehicleChoice,
   RateType,
@@ -162,18 +162,29 @@ export function BookingForm() {
     return () => clearTimeout(timeout);
   }, [pickup, dropoff, rateType, isMetered, mapsLoaded]);
 
+  // Display-only estimate. The airport fixed rate assumes the address is
+  // within Oslo — the server independently verifies that (and falls back to
+  // distance pricing if not) before ever charging a card.
   const estimatedFare = useMemo(() => {
-    if (!isMetered) return null;
+    if (!isMetered || !date) return null;
     const meteredVehicle = vehicle as MeteredVehicleKey;
+    const multiplier = getPriceMultiplier(date);
+    let base: number | null = null;
     if (rateType === "fixed") {
-      if (fixedOption === "hourly") {
-        return hours >= 1 ? calculateHourlyFare(meteredVehicle, hours) : null;
-      }
-      return getAirportFare(meteredVehicle);
+      base = fixedOption === "hourly" ? (hours >= 1 ? calculateHourlyFare(meteredVehicle, hours) : null) : getAirportFare(meteredVehicle);
+    } else if (route) {
+      base = calculateDistanceFare(meteredVehicle, route.distanceKm, route.durationMin);
     }
-    if (route) return calculateDistanceFare(meteredVehicle, route.distanceKm, route.durationMin);
-    return null;
-  }, [isMetered, vehicle, rateType, fixedOption, hours, route]);
+    return base == null ? null : Math.round(base * multiplier);
+  }, [isMetered, vehicle, rateType, fixedOption, hours, route, date]);
+
+  const surchargeType = date ? getSurchargeType(date) : null;
+  const surchargeLabel =
+    surchargeType === "holiday"
+      ? t("booking.surchargeHoliday")
+      : surchargeType === "weekend"
+      ? t("booking.surchargeWeekend")
+      : null;
 
   function validateDateTime(d: string, tm: string): boolean {
     if (!d || !tm) return true;
@@ -709,6 +720,10 @@ export function BookingForm() {
                             </div>
                           </div>
                         )}
+
+                        {fixedOption === "airport" && (
+                          <p className="text-xs text-muted-foreground">{t("booking.airportOutsideOsloNote")}</p>
+                        )}
                       </>
                     )}
 
@@ -834,11 +849,16 @@ export function BookingForm() {
                     )}
 
                     {estimatedFare != null && (
-                      <div className="flex items-center justify-between bg-accent/5 border border-accent/20 p-4">
-                        <span className="text-sm font-medium text-foreground">
-                          {rateType === "distance" ? t("booking.estimatedFare") : t("booking.fixedFare")}
-                        </span>
-                        <span className="font-serif text-2xl font-semibold text-accent">{kr(estimatedFare)}</span>
+                      <div className="bg-accent/5 border border-accent/20 p-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-foreground">
+                            {rateType === "distance" ? t("booking.estimatedFare") : t("booking.fixedFare")}
+                          </span>
+                          <span className="font-serif text-2xl font-semibold text-accent">{kr(estimatedFare)}</span>
+                        </div>
+                        {surchargeLabel && (
+                          <p className="mt-2 text-xs font-medium text-accent">{surchargeLabel}</p>
+                        )}
                       </div>
                     )}
                     {rateType === "distance" && (
