@@ -31,6 +31,11 @@ export async function getServerRoute(
 
   const data = await res.json();
   if (data.status !== "OK" || !data.routes?.[0]?.legs?.[0]) {
+    if (data.status === "REQUEST_DENIED") {
+      throw new Error(
+        "Google rejected the directions request — make sure the Directions API is enabled for this project, and that GOOGLE_MAPS_SERVER_API_KEY isn't restricted to only an HTTP referrer (server requests have none)."
+      );
+    }
     throw new Error(`Could not calculate a route between the given addresses (${data.status}).`);
   }
 

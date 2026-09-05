@@ -39,6 +39,7 @@ import {
   Autocomplete,
   GoogleMap,
   DirectionsRenderer,
+  Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
 import {
@@ -84,6 +85,7 @@ export function BookingForm() {
   const [hours, setHours] = useState(2);
   const [airportDirection, setAirportDirection] = useState<AirportDirection>("fromAirport");
   const [fixedAddress, setFixedAddress] = useState("");
+  const [fixedAddressLocation, setFixedAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   // Distance mode
   const [pickup, setPickup] = useState("");
@@ -107,6 +109,7 @@ export function BookingForm() {
 
   const pickupAutoRef = useRef<google.maps.places.Autocomplete | null>(null);
   const dropoffAutoRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const fixedAddressAutoRef = useRef<google.maps.places.Autocomplete | null>(null);
 
   const mapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
   const mapsConfigured = mapsApiKey.length > 0;
@@ -127,11 +130,34 @@ export function BookingForm() {
 
   const isMetered = vehicle !== "" && isMeteredVehicle(vehicle);
 
-  // Calculate the live route once both distance-mode addresses are set.
-  // Debounced so typing (rather than picking a suggestion) doesn't fire a
-  // Directions request on every keystroke.
+  // The pickup/dropoff pair implied by the current mode, used both for the
+  // live route preview and (mirrored in handleSubmit) for what's submitted.
+  const effectiveTrip = useMemo(() => {
+    if (vehicle === "sixteenPlus") {
+      return { pickup: customPickup, dropoff: customDropoff };
+    }
+    if (rateType === "fixed") {
+      if (fixedOption === "hourly") {
+        return { pickup: fixedAddress, dropoff: "" };
+      }
+      return airportDirection === "fromAirport"
+        ? { pickup: GARDEMOEN_ADDRESS, dropoff: fixedAddress }
+        : { pickup: fixedAddress, dropoff: GARDEMOEN_ADDRESS };
+    }
+    return { pickup, dropoff };
+  }, [vehicle, rateType, fixedOption, airportDirection, fixedAddress, pickup, dropoff, customPickup, customDropoff]);
+
+  // A route (pickup -> dropoff) makes sense for distance bookings and for
+  // the airport transfer; an hourly charter only has a single pickup point,
+  // shown as a marker instead (see fixedAddressLocation).
+  const wantsRoute = isMetered && (rateType === "distance" || (rateType === "fixed" && fixedOption === "airport"));
+
+  // Calculate the live route once both addresses for the current mode are
+  // set. Debounced so typing (rather than picking a suggestion) doesn't fire
+  // a Directions request on every keystroke.
   useEffect(() => {
-    if (rateType !== "distance" || !isMetered || !mapsLoaded || !pickup || !dropoff) {
+    const { pickup: origin, dropoff: destination } = effectiveTrip;
+    if (!wantsRoute || !mapsLoaded || !origin || !destination) {
       setRoute(null);
       setDirections(null);
       setRouteError(false);
@@ -142,7 +168,7 @@ export function BookingForm() {
     const timeout = setTimeout(() => {
       const directionsService = new google.maps.DirectionsService();
       directionsService.route(
-        { origin: pickup, destination: dropoff, travelMode: google.maps.TravelMode.DRIVING },
+        { origin, destination, travelMode: google.maps.TravelMode.DRIVING },
         (result, status) => {
           setRouteLoading(false);
           if (status === "OK" && result) {
@@ -160,7 +186,7 @@ export function BookingForm() {
       );
     }, 600);
     return () => clearTimeout(timeout);
-  }, [pickup, dropoff, rateType, isMetered, mapsLoaded]);
+  }, [effectiveTrip, wantsRoute, mapsLoaded]);
 
   // Display-only estimate. The airport fixed rate assumes the address is
   // within Oslo — the server independently verifies that (and falls back to
@@ -209,6 +235,16 @@ export function BookingForm() {
     if (place?.formatted_address) setDropoff(place.formatted_address);
   }
 
+  function onFixedAddressPlaceChanged() {
+    const place = fixedAddressAutoRef.current?.getPlace();
+    if (place?.formatted_address) setFixedAddress(place.formatted_address);
+    if (place?.geometry?.location) {
+      setFixedAddressLocation({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng() });
+    } else {
+      setFixedAddressLocation(null);
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
@@ -221,27 +257,6 @@ export function BookingForm() {
       return;
     }
 
-    let effectivePickup = "";
-    let effectiveDropoff = "";
-
-    if (vehicle === "sixteenPlus") {
-      effectivePickup = customPickup;
-      effectiveDropoff = customDropoff;
-    } else if (rateType === "fixed") {
-      if (fixedOption === "hourly") {
-        effectivePickup = fixedAddress;
-      } else if (airportDirection === "fromAirport") {
-        effectivePickup = GARDEMOEN_ADDRESS;
-        effectiveDropoff = fixedAddress;
-      } else {
-        effectivePickup = fixedAddress;
-        effectiveDropoff = GARDEMOEN_ADDRESS;
-      }
-    } else {
-      effectivePickup = pickup;
-      effectiveDropoff = dropoff;
-    }
-
     const body: BookingRequest = {
       name,
       email,
@@ -251,8 +266,8 @@ export function BookingForm() {
       fixedOption: isMetered && rateType === "fixed" ? fixedOption : undefined,
       hours: isMetered && rateType === "fixed" && fixedOption === "hourly" ? hours : undefined,
       airportDirection: isMetered && rateType === "fixed" && fixedOption === "airport" ? airportDirection : undefined,
-      pickup: effectivePickup || undefined,
-      dropoff: effectiveDropoff || undefined,
+      pickup: effectiveTrip.pickup || undefined,
+      dropoff: effectiveTrip.dropoff || undefined,
       passengerCount: vehicle === "sixteenPlus" ? passengerCount : undefined,
       date,
       time,
@@ -300,6 +315,7 @@ export function BookingForm() {
     setFixedOption("hourly");
     setHours(2);
     setFixedAddress("");
+    setFixedAddressLocation(null);
     setPickup("");
     setDropoff("");
     setRoute(null);
@@ -309,6 +325,43 @@ export function BookingForm() {
     setPassengerCount("");
     setPaymentMethod("later");
   }
+
+  const inputClass =
+    "pl-10 h-12 bg-muted/50 border-border focus:bg-background transition-colors duration-300";
+
+  const fixedAddressField = (
+    <div className="relative">
+      <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground z-10" />
+      {mapsConfigured && mapsLoaded ? (
+        <Autocomplete
+          onLoad={(a) => (fixedAddressAutoRef.current = a)}
+          onPlaceChanged={onFixedAddressPlaceChanged}
+          options={{ componentRestrictions: { country: "no" } }}
+        >
+          <Input
+            id="fixedAddress"
+            value={fixedAddress}
+            onChange={(e) => {
+              setFixedAddress(e.target.value);
+              setFixedAddressLocation(null);
+            }}
+            placeholder={t("booking.pickupPlaceholder")}
+            required
+            className={inputClass}
+          />
+        </Autocomplete>
+      ) : (
+        <Input
+          id="fixedAddress"
+          value={fixedAddress}
+          onChange={(e) => setFixedAddress(e.target.value)}
+          placeholder={t("booking.pickupPlaceholder")}
+          required
+          className={inputClass}
+        />
+      )}
+    </div>
+  );
 
   if (submitted) {
     return (
@@ -338,9 +391,6 @@ export function BookingForm() {
       </section>
     );
   }
-
-  const inputClass =
-    "pl-10 h-12 bg-muted/50 border-border focus:bg-background transition-colors duration-300";
 
   return (
     <section id="booking" className="py-24 lg:py-32 bg-card">
@@ -614,6 +664,13 @@ export function BookingForm() {
                       </div>
                     </div>
 
+                    {!mapsConfigured && (
+                      <div className="flex items-start gap-3 bg-muted/50 border border-border p-4">
+                        <Info className="h-4 w-4 text-accent shrink-0 mt-0.5" />
+                        <p className="text-sm text-muted-foreground">{t("booking.mapsUnavailable")}</p>
+                      </div>
+                    )}
+
                     {rateType === "fixed" && (
                       <>
                         <div className="grid grid-cols-2 gap-3">
@@ -649,17 +706,7 @@ export function BookingForm() {
                               <Label htmlFor="fixedAddress" className="text-sm font-medium text-foreground">
                                 {t("booking.hourlyAddressLabel")}
                               </Label>
-                              <div className="relative">
-                                <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input
-                                  id="fixedAddress"
-                                  value={fixedAddress}
-                                  onChange={(e) => setFixedAddress(e.target.value)}
-                                  placeholder={t("booking.pickupPlaceholder")}
-                                  required
-                                  className={inputClass}
-                                />
-                              </div>
+                              {fixedAddressField}
                             </div>
                             <div className="space-y-2">
                               <Label htmlFor="hours" className="text-sm font-medium text-foreground">
@@ -703,26 +750,66 @@ export function BookingForm() {
                               </div>
                             </div>
                             <div className="space-y-2">
-                              <Label htmlFor="airportAddress" className="text-sm font-medium text-foreground">
+                              <Label htmlFor="fixedAddress" className="text-sm font-medium text-foreground">
                                 {t("booking.airportAddressLabel")}
                               </Label>
-                              <div className="relative">
-                                <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                                <Input
-                                  id="airportAddress"
-                                  value={fixedAddress}
-                                  onChange={(e) => setFixedAddress(e.target.value)}
-                                  placeholder={t("booking.pickupPlaceholder")}
-                                  required
-                                  className={inputClass}
-                                />
-                              </div>
+                              {fixedAddressField}
                             </div>
                           </div>
                         )}
 
                         {fixedOption === "airport" && (
-                          <p className="text-xs text-muted-foreground">{t("booking.airportOutsideOsloNote")}</p>
+                          <>
+                            <p className="text-xs text-muted-foreground">{t("booking.airportOutsideOsloNote")}</p>
+                            {mapsConfigured && fixedAddress && (
+                              <div className="border border-border overflow-hidden">
+                                {routeLoading ? (
+                                  <div className="h-56 flex items-center justify-center bg-muted/50 text-sm text-muted-foreground gap-2">
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                    {t("booking.calculatingRoute")}
+                                  </div>
+                                ) : routeError ? (
+                                  <div className="h-56 flex items-center justify-center bg-muted/50 text-sm text-destructive px-6 text-center">
+                                    {t("booking.routeError")}
+                                  </div>
+                                ) : directions ? (
+                                  mapsLoaded && (
+                                    <GoogleMap
+                                      mapContainerStyle={{ width: "100%", height: "224px" }}
+                                      center={OSLO_CENTER}
+                                      zoom={11}
+                                      options={{ disableDefaultUI: true, zoomControl: true }}
+                                    >
+                                      <DirectionsRenderer directions={directions} />
+                                    </GoogleMap>
+                                  )
+                                ) : (
+                                  <div className="h-56 flex items-center justify-center bg-muted/50 text-sm text-muted-foreground px-6 text-center">
+                                    {t("booking.enterAddresses")}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </>
+                        )}
+
+                        {fixedOption === "hourly" && mapsConfigured && fixedAddress && (
+                          <div className="border border-border overflow-hidden">
+                            {mapsLoaded && fixedAddressLocation ? (
+                              <GoogleMap
+                                mapContainerStyle={{ width: "100%", height: "224px" }}
+                                center={fixedAddressLocation}
+                                zoom={14}
+                                options={{ disableDefaultUI: true, zoomControl: true }}
+                              >
+                                <Marker position={fixedAddressLocation} />
+                              </GoogleMap>
+                            ) : (
+                              <div className="h-56 flex items-center justify-center bg-muted/50 text-sm text-muted-foreground px-6 text-center">
+                                {t("booking.enterAddresses")}
+                              </div>
+                            )}
+                          </div>
                         )}
                       </>
                     )}
@@ -797,13 +884,6 @@ export function BookingForm() {
                             </div>
                           </div>
                         </div>
-
-                        {!mapsConfigured && (
-                          <div className="flex items-start gap-3 bg-muted/50 border border-border p-4">
-                            <Info className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-                            <p className="text-sm text-muted-foreground">{t("booking.mapsUnavailable")}</p>
-                          </div>
-                        )}
 
                         {mapsConfigured && (pickup || dropoff) && (
                           <div className="border border-border overflow-hidden">
