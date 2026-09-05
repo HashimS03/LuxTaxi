@@ -1,8 +1,8 @@
+import { isOsloAdminArea } from "@/lib/oslo-boundary";
+
 /**
  * Checks whether an address is within Oslo (the county/municipality), used
- * to decide whether the fixed Gardemoen Airport rate applies. Oslo is
- * unique among Norwegian regions in that the city and county are the same
- * area, so matching administrative_area_level_1 === "Oslo" is sufficient.
+ * to decide whether the fixed Gardemoen Airport rate applies.
  */
 export async function isAddressInOslo(address: string): Promise<boolean> {
   const apiKey = process.env.GOOGLE_MAPS_SERVER_API_KEY;
@@ -30,10 +30,5 @@ export async function isAddressInOslo(address: string): Promise<boolean> {
     throw new Error(`Could not locate this address (${data.status}).`);
   }
 
-  const components: Array<{ long_name: string; short_name: string; types: string[] }> =
-    data.results[0].address_components ?? [];
-
-  return components.some(
-    (c) => c.types.includes("administrative_area_level_1") && (c.long_name === "Oslo" || c.short_name === "Oslo")
-  );
+  return isOsloAdminArea(data.results[0].address_components ?? []);
 }

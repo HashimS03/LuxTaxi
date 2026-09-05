@@ -116,6 +116,8 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.airportAddressLabel": "Address in Oslo",
     "booking.airportOutsideOsloNote":
       "The fixed rate applies to trips within Oslo. If this address is outside Oslo, distance-based pricing applies automatically.",
+    "booking.airportOutsideOsloConfirmed":
+      "This address is outside Oslo — priced by distance instead of the fixed rate.",
     "booking.airportRouteRequired":
       "Please select your address from the suggestions above so we can confirm the route before payment.",
     "booking.surchargeWeekend": "Weekend surcharge (+15%)",
@@ -356,6 +358,8 @@ export const translations: Record<Locale, Record<string, string>> = {
     "booking.airportAddressLabel": "Adresse i Oslo",
     "booking.airportOutsideOsloNote":
       "Fastprisen gjelder for turer innenfor Oslo. Hvis denne adressen er utenfor Oslo, blir prisen automatisk basert på distanse.",
+    "booking.airportOutsideOsloConfirmed":
+      "Denne adressen er utenfor Oslo — prisen beregnes basert på distanse i stedet for fastprisen.",
     "booking.airportRouteRequired":
       "Vennligst velg adressen din fra forslagene over, slik at vi kan bekrefte ruten før betaling.",
     "booking.surchargeWeekend": "Helgetillegg (+15%)",

@@ -51,6 +51,7 @@ import {
   type MeteredVehicleKey,
 } from "@/lib/pricing";
 import { getPriceMultiplier, getSurchargeType } from "@/lib/norway-holidays";
+import { isOsloAdminArea } from "@/lib/oslo-boundary";
 import type {
   VehicleChoice,
   RateType,
@@ -86,6 +87,8 @@ export function BookingForm() {
   const [airportDirection, setAirportDirection] = useState<AirportDirection>("fromAirport");
   const [fixedAddress, setFixedAddress] = useState("");
   const [fixedAddressLocation, setFixedAddressLocation] = useState<{ lat: number; lng: number } | null>(null);
+  // null = not yet resolved (typed but not selected, or maps unavailable).
+  const [fixedAddressInOslo, setFixedAddressInOslo] = useState<boolean | null>(null);
 
   // Distance mode
   const [pickup, setPickup] = useState("");
@@ -188,21 +191,32 @@ export function BookingForm() {
     return () => clearTimeout(timeout);
   }, [effectiveTrip, wantsRoute, mapsLoaded]);
 
-  // Display-only estimate. The airport fixed rate assumes the address is
-  // within Oslo — the server independently verifies that (and falls back to
-  // distance pricing if not) before ever charging a card.
+  // Once a selected airport-mode address resolves outside Oslo, price it by
+  // distance instead of showing the flat rate — matches what the server
+  // will actually charge, computed the same way (see lib/compute-fare.ts).
+  const isAirportOutsideOslo =
+    rateType === "fixed" && fixedOption === "airport" && fixedAddressInOslo === false;
+
+  // Display-only estimate. The server independently re-verifies the Oslo
+  // check and the route before ever charging a card.
   const estimatedFare = useMemo(() => {
     if (!isMetered || !date) return null;
     const meteredVehicle = vehicle as MeteredVehicleKey;
     const multiplier = getPriceMultiplier(date);
     let base: number | null = null;
     if (rateType === "fixed") {
-      base = fixedOption === "hourly" ? (hours >= 1 ? calculateHourlyFare(meteredVehicle, hours) : null) : getAirportFare(meteredVehicle);
+      if (fixedOption === "hourly") {
+        base = hours >= 1 ? calculateHourlyFare(meteredVehicle, hours) : null;
+      } else if (isAirportOutsideOslo && route) {
+        base = calculateDistanceFare(meteredVehicle, route.distanceKm, route.durationMin);
+      } else {
+        base = getAirportFare(meteredVehicle);
+      }
     } else if (route) {
       base = calculateDistanceFare(meteredVehicle, route.distanceKm, route.durationMin);
     }
     return base == null ? null : Math.round(base * multiplier);
-  }, [isMetered, vehicle, rateType, fixedOption, hours, route, date]);
+  }, [isMetered, vehicle, rateType, fixedOption, hours, route, date, isAirportOutsideOslo]);
 
   // Gardemoen "Pay Now" requires a resolved route, so a half-typed address
   // (submitted before picking a suggestion, or before the debounce settles)
@@ -251,6 +265,9 @@ export function BookingForm() {
     } else {
       setFixedAddressLocation(null);
     }
+    setFixedAddressInOslo(
+      place?.address_components ? isOsloAdminArea(place.address_components) : null
+    );
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -324,6 +341,7 @@ export function BookingForm() {
     setHours(2);
     setFixedAddress("");
     setFixedAddressLocation(null);
+    setFixedAddressInOslo(null);
     setPickup("");
     setDropoff("");
     setRoute(null);
@@ -352,6 +370,7 @@ export function BookingForm() {
             onChange={(e) => {
               setFixedAddress(e.target.value);
               setFixedAddressLocation(null);
+              setFixedAddressInOslo(null);
             }}
             placeholder={t("booking.pickupPlaceholder")}
             required
@@ -768,7 +787,11 @@ export function BookingForm() {
 
                         {fixedOption === "airport" && (
                           <>
-                            <p className="text-xs text-muted-foreground">{t("booking.airportOutsideOsloNote")}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {isAirportOutsideOslo
+                                ? t("booking.airportOutsideOsloConfirmed")
+                                : t("booking.airportOutsideOsloNote")}
+                            </p>
                             {mapsConfigured && fixedAddress && (
                               <div className="border border-border overflow-hidden">
                                 {routeLoading ? (
@@ -940,7 +963,9 @@ export function BookingForm() {
                       <div className="bg-accent/5 border border-accent/20 p-4">
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-medium text-foreground">
-                            {rateType === "distance" ? t("booking.estimatedFare") : t("booking.fixedFare")}
+                            {rateType === "distance" || isAirportOutsideOslo
+                              ? t("booking.estimatedFare")
+                              : t("booking.fixedFare")}
                           </span>
                           <span className="font-serif text-2xl font-semibold text-accent">{kr(estimatedFare)}</span>
                         </div>
@@ -949,7 +974,7 @@ export function BookingForm() {
                         )}
                       </div>
                     )}
-                    {rateType === "distance" && (
+                    {(rateType === "distance" || isAirportOutsideOslo) && (
                       <p className="text-xs text-muted-foreground -mt-2">{t("booking.fareEstimateNote")}</p>
                     )}
                   </>
