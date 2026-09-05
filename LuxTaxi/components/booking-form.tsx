@@ -204,6 +204,14 @@ export function BookingForm() {
     return base == null ? null : Math.round(base * multiplier);
   }, [isMetered, vehicle, rateType, fixedOption, hours, route, date]);
 
+  // Gardemoen "Pay Now" requires a resolved route, so a half-typed address
+  // (submitted before picking a suggestion, or before the debounce settles)
+  // can't reach checkout — it would only fail there with a confusing error.
+  // Not enforced when maps aren't configured, since there's no way to
+  // validate the address client-side in that case.
+  const airportNeedsValidRoute = isMetered && rateType === "fixed" && fixedOption === "airport" && mapsConfigured;
+  const airportRouteReady = !airportNeedsValidRoute || (route != null && !routeLoading);
+
   const surchargeType = date ? getSurchargeType(date) : null;
   const surchargeLabel =
     surchargeType === "holiday"
@@ -1076,12 +1084,19 @@ export function BookingForm() {
                 </div>
               </div>
 
+              {paymentMethod === "now" && airportNeedsValidRoute && !airportRouteReady && fixedAddress && (
+                <p className="mt-4 text-sm text-destructive">{t("booking.airportRouteRequired")}</p>
+              )}
+
               <div className="mt-6">
                 <Button
                   type="submit"
                   size="lg"
                   className="w-full h-14 text-base group"
-                  disabled={loading || (paymentMethod === "now" && estimatedFare == null)}
+                  disabled={
+                    loading ||
+                    (paymentMethod === "now" && (estimatedFare == null || !airportRouteReady))
+                  }
                 >
                   {loading ? (
                     <span className="flex items-center gap-2">
