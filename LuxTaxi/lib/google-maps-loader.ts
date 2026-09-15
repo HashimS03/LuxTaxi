@@ -4,6 +4,12 @@ export const GOOGLE_MAPS_LIBRARIES: "places"[] = ["places"];
 
 export const OSLO_CENTER = { lat: 59.9139, lng: 10.7522 };
 
+// Shared brand colors for anything drawn on the map (routes, markers) so
+// they always match the site's ink/accent tokens without duplicating hex
+// values across components.
+export const BRAND_INK = "#1C1A18";
+export const BRAND_ACCENT = "#7B2434";
+
 export function useGoogleMapsLoader() {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
   const { isLoaded } = useJsApiLoader({
@@ -30,5 +36,5 @@ export const ELEGANT_MAP_STYLE: google.maps.MapTypeStyle[] = [
   { featureType: "road.local", elementType: "labels", stylers: [{ visibility: "off" }] },
   { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#f0e6cb" }] },
   { featureType: "transit", stylers: [{ visibility: "off" }] },
-  { featureType: "water", elementType: "geometry", stylers: [{ color: "#dde6df" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#dfe1e6" }] },
 ];
