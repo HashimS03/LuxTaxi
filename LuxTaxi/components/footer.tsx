@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Phone, Mail, MapPin, ArrowUpRight } from "lucide-react";
-import { LogoMark } from "@/components/logo-mark";
 import { useLocale } from "@/lib/locale-context";
 
 export function Footer() {
@@ -15,8 +14,7 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-12">
           {/* Brand Column */}
           <div className="lg:col-span-4">
-            <Link href="/" className="inline-flex items-center gap-2.5">
-              <LogoMark className="h-8 w-8 shrink-0" />
+            <Link href="/" className="inline-flex items-center">
               <span className="font-serif text-xl font-semibold text-foreground">
                 Oslo Limousine
               </span>
