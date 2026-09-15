@@ -23,7 +23,7 @@ export function Hero() {
           <h1 className="font-serif text-5xl md:text-6xl font-medium leading-[1.1] tracking-tight text-foreground animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             {t("hero.title1")}
             <br />
-            <span className="text-accent">{t("hero.title2")}</span>
+            <span className="text-shimmer">{t("hero.title2")}</span>
           </h1>
 
           <p className="mt-8 text-lg text-muted-foreground leading-relaxed max-w-lg animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
