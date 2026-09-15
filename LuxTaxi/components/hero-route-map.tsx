@@ -80,7 +80,11 @@ function pickRandomRoute(): SampleRoute {
   return SAMPLE_ROUTES[Math.floor(Math.random() * SAMPLE_ROUTES.length)];
 }
 
-export function HeroRouteMap() {
+export function HeroRouteMap({
+  onRouteResolved,
+}: {
+  onRouteResolved?: (route: { from: string; to: string; price: string }) => void;
+}) {
   const { isLoaded, isConfigured } = useGoogleMapsLoader();
   const route = useMemo(() => pickRandomRoute(), []);
   const [resolved, setResolved] = useState<ResolvedRoute | null>(null);
@@ -99,12 +103,14 @@ export function HeroRouteMap() {
         const path = result.routes[0].overview_path.map((p) => ({ lat: p.lat(), lng: p.lng() }));
         const midPos = path[Math.floor(path.length / 2)] ?? route.toPos;
         setResolved({ ...route, path, midPos, bounds: result.routes[0].bounds });
+        onRouteResolved?.({ from: route.from, to: route.to, price: route.price });
       }
     );
 
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, route]);
 
   // Zoom/pan so the whole trip is in view as soon as it resolves, instead
@@ -183,26 +189,13 @@ export function HeroRouteMap() {
             }}
           />
 
-          {/* The car + route/fare, as one card sitting on the route */}
+          {/* The car, sitting on the route — the route/fare itself is
+              shown in the widget below the map, not on the map surface,
+              since Google's own place labels made an on-map text card
+              unreliable to read at every zoom level. */}
           <OverlayView position={resolved.midPos} mapPaneName={OverlayView.FLOAT_PANE}>
-            <div
-              className="flex -translate-x-1/2 -translate-y-1/2 items-center gap-3 whitespace-nowrap rounded-2xl border border-border bg-card px-4 py-2.5 shadow-[0_20px_40px_-16px_rgba(28,26,24,0.45)]"
-              style={{ fontFamily: "var(--font-inter), system-ui, sans-serif" }}
-            >
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-foreground">
-                <Car className="h-4 w-4 text-background" />
-              </span>
-              <div>
-                <p className="text-[11px] font-medium text-muted-foreground">
-                  {resolved.from} <span className="text-foreground">→</span> {resolved.to}
-                </p>
-                <p
-                  className="text-base font-semibold leading-tight text-accent"
-                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
-                >
-                  {resolved.price}
-                </p>
-              </div>
+            <div className="flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-foreground shadow-[0_8px_20px_-6px_rgba(28,26,24,0.5)]">
+              <Car className="h-4 w-4 text-background" />
             </div>
           </OverlayView>
         </>

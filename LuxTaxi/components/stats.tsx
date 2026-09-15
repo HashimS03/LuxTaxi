@@ -1,34 +1,32 @@
 "use client";
 
 import { useLocale } from "@/lib/locale-context";
+import { AnimatedNumber } from "@/components/animated-number";
+import { Reveal } from "@/components/reveal";
 
 export function Stats() {
   const { t } = useLocale();
 
   const stats = [
-    { value: "12K+", label: t("stats.rides") },
-    { value: "98%", label: t("stats.satisfaction") },
-    { value: "24/7", label: t("stats.availability") },
-    { value: "50+", label: t("stats.chauffeurs") },
+    { target: 12, suffix: "K+", label: t("stats.rides") },
+    { target: 98, suffix: "%", label: t("stats.satisfaction") },
+    { target: 24, suffix: "/7", label: t("stats.availability") },
+    { target: 50, suffix: "+", label: t("stats.chauffeurs") },
   ];
 
   return (
-    <section className="py-14 lg:py-16">
+    <section className="bg-foreground py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-y-10 border-y border-border py-10 lg:grid-cols-4 lg:gap-0 lg:py-9">
+        <div className="grid grid-cols-2 gap-12 lg:grid-cols-4">
           {stats.map((stat, index) => (
-            <div
-              key={stat.label}
-              className="text-center lg:border-r lg:border-border lg:last:border-r-0"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <p className="font-serif text-4xl md:text-5xl font-semibold text-foreground tracking-tight">
-                {stat.value}
+            <Reveal key={stat.label} delay={index * 100} className="text-center">
+              <p className="font-serif text-5xl md:text-6xl lg:text-7xl font-semibold text-background tracking-tight">
+                <AnimatedNumber target={stat.target} suffix={stat.suffix} />
               </p>
-              <p className="mt-2 text-sm font-medium text-muted-foreground">
+              <p className="mt-3 text-sm font-medium text-background/60 uppercase tracking-wider">
                 {stat.label}
               </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>
