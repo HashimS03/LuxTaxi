@@ -22,6 +22,7 @@ type SampleRoute = {
 type ResolvedRoute = SampleRoute & {
   path: { lat: number; lng: number }[];
   midPos: { lat: number; lng: number };
+  bounds: google.maps.LatLngBounds;
 };
 
 const SAMPLE_ROUTES: SampleRoute[] = [
@@ -83,6 +84,7 @@ export function HeroRouteMap() {
   const { isLoaded, isConfigured } = useGoogleMapsLoader();
   const route = useMemo(() => pickRandomRoute(), []);
   const [resolved, setResolved] = useState<ResolvedRoute | null>(null);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -96,7 +98,7 @@ export function HeroRouteMap() {
         if (status !== "OK" || !result?.routes[0]) return;
         const path = result.routes[0].overview_path.map((p) => ({ lat: p.lat(), lng: p.lng() }));
         const midPos = path[Math.floor(path.length / 2)] ?? route.toPos;
-        setResolved({ ...route, path, midPos });
+        setResolved({ ...route, path, midPos, bounds: result.routes[0].bounds });
       }
     );
 
@@ -104,6 +106,14 @@ export function HeroRouteMap() {
       cancelled = true;
     };
   }, [isLoaded, route]);
+
+  // Zoom/pan so the whole trip is in view as soon as it resolves, instead
+  // of sitting at a fixed city-wide zoom that may crop a longer route.
+  useEffect(() => {
+    if (map && resolved) {
+      map.fitBounds(resolved.bounds, { top: 60, right: 60, bottom: 150, left: 60 });
+    }
+  }, [map, resolved]);
 
   if (!isConfigured || !isLoaded) {
     // Warm gradient placeholder so the panel still looks intentional
@@ -118,6 +128,8 @@ export function HeroRouteMap() {
       mapContainerStyle={{ width: "100%", height: "100%" }}
       center={OSLO_CENTER}
       zoom={10}
+      onLoad={(m) => setMap(m)}
+      onUnmount={() => setMap(null)}
       options={{
         disableDefaultUI: true,
         gestureHandling: "cooperative",
