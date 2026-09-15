@@ -11,20 +11,19 @@ export function LogoMark({ className }: { className?: string }) {
       <circle cx="32" cy="32" r="32" fill="#161412" />
       <circle cx="32" cy="32" r="29.8" stroke="#C9A227" strokeOpacity="0.9" strokeWidth="1.2" />
 
-      {/* Stretch-limousine silhouette: long, low cabin over a long, low body */}
-      <rect x="14" y="29" width="36" height="10" rx="4.5" fill="#C9A227" />
-      <rect x="6" y="34" width="52" height="11" rx="5.5" fill="#C9A227" />
-
-      {/* Window band */}
-      <rect x="18" y="31.2" width="28" height="5.6" rx="2.4" fill="#161412" />
-      <rect x="27.4" y="31.2" width="1.3" height="5.6" fill="#161412" />
-      <rect x="35.4" y="31.2" width="1.3" height="5.6" fill="#161412" />
-
-      {/* Wheels */}
-      <circle cx="18" cy="45" r="5.2" fill="#161412" stroke="#C9A227" strokeWidth="1.4" />
-      <circle cx="46" cy="45" r="5.2" fill="#161412" stroke="#C9A227" strokeWidth="1.4" />
-      <circle cx="18" cy="45" r="1.7" fill="#C9A227" />
-      <circle cx="46" cy="45" r="1.7" fill="#C9A227" />
+      <g
+        transform="translate(32,33) scale(1.9) translate(-12,-12)"
+        stroke="#C9A227"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      >
+        <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+        <circle cx="7" cy="17" r="2" />
+        <path d="M9 17h6" />
+        <circle cx="17" cy="17" r="2" />
+      </g>
     </svg>
   );
 }
