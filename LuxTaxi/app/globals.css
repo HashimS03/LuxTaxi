@@ -10,36 +10,37 @@
 
 @layer base {
   :root {
-    /* "Elegant Journey" palette — warm ivory + deep pine ink + muted gold,
-       replacing the earlier navy/orange system with a softer travel-app feel. */
+    /* "Black Car" palette — warm ivory + near-black ink + a deep burgundy
+       accent, evoking a classic black limousine with red-carpet trim rather
+       than the earlier green/gold "travel app" tone. */
     --background: 38 45% 96%;
-    --foreground: 90 10% 14%;
+    --foreground: 30 8% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 90 10% 14%;
+    --card-foreground: 30 8% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 90 10% 14%;
-    --primary: 90 10% 14%;
-    --primary-foreground: 42 45% 97%;
-    --secondary: 40 22% 92%;
-    --secondary-foreground: 90 10% 18%;
-    --muted: 42 50% 91%;
-    --muted-foreground: 46 7% 42%;
-    --accent: 41 48% 47%;
+    --popover-foreground: 30 8% 10%;
+    --primary: 30 8% 10%;
+    --primary-foreground: 40 20% 97%;
+    --secondary: 30 15% 92%;
+    --secondary-foreground: 30 8% 16%;
+    --muted: 30 12% 92%;
+    --muted-foreground: 30 6% 42%;
+    --accent: 349 55% 31%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 39 32% 88%;
-    --input: 39 32% 88%;
-    /* A soft pine-green wash for alternating section backgrounds, so
+    --border: 30 14% 87%;
+    --input: 30 14% 87%;
+    /* A warm neutral stone wash for alternating section backgrounds, so
        sections read as visually distinct instead of blending together. */
-    --surface-alt: 130 16% 92%;
-    /* Deep pine used for the logo mark and small dark accents. */
-    --brand-pine: 143 15% 24%;
-    --ring: 90 10% 14%;
-    --chart-1: 90 10% 14%;
-    --chart-2: 41 48% 47%;
+    --surface-alt: 24 20% 91%;
+    /* Near-black used for the logo mark and small dark accents. */
+    --brand-ink: 30 10% 8%;
+    --ring: 30 8% 10%;
+    --chart-1: 30 8% 10%;
+    --chart-2: 349 55% 31%;
     --chart-3: 40 30% 70%;
-    --chart-4: 143 15% 34%;
+    --chart-4: 30 10% 30%;
     --chart-5: 52 55% 50%;
     --radius: 1.25rem;
     --sidebar-background: 0 0% 100%;
