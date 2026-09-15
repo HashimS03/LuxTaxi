@@ -23,6 +23,7 @@ type ResolvedRoute = SampleRoute & {
   path: { lat: number; lng: number }[];
   midPos: { lat: number; lng: number };
   bounds: google.maps.LatLngBounds;
+  cumulativeDistances: number[];
 };
 
 const SAMPLE_ROUTES: SampleRoute[] = [
@@ -80,17 +81,38 @@ function pickRandomRoute(): SampleRoute {
   return SAMPLE_ROUTES[Math.floor(Math.random() * SAMPLE_ROUTES.length)];
 }
 
-// Linear position along a polyline at progress t (0..1), interpolating
-// between the two nearest points so the car eases smoothly between the
-// road-following vertices instead of jumping from point to point.
-function pointAlongPath(path: { lat: number; lng: number }[], t: number) {
+// Cumulative straight-line distance between consecutive path points
+// (city-scale, so a flat approximation is accurate enough — no need for
+// haversine). Used to move the car at a constant real-world speed rather
+// than a constant vertex-index speed, since overview_path vertices are
+// spaced unevenly (dense through turns, sparse on straight stretches).
+function buildCumulativeDistances(path: { lat: number; lng: number }[]) {
+  const distances = [0];
+  for (let i = 1; i < path.length; i++) {
+    const a = path[i - 1];
+    const b = path[i];
+    distances.push(distances[i - 1] + Math.hypot(b.lat - a.lat, b.lng - a.lng));
+  }
+  return distances;
+}
+
+// Position along the polyline at progress t (0..1) of the total distance,
+// interpolating between the two nearest points for a smooth in-between.
+function pointAtDistanceFraction(
+  path: { lat: number; lng: number }[],
+  cumulativeDistances: number[],
+  t: number
+) {
   if (path.length < 2) return path[0];
-  const scaled = t * (path.length - 1);
-  const i = Math.floor(scaled);
-  const frac = scaled - i;
-  const a = path[i];
-  const b = path[Math.min(i + 1, path.length - 1)];
-  return { lat: a.lat + (b.lat - a.lat) * frac, lng: a.lng + (b.lng - a.lng) * frac };
+  const target = t * cumulativeDistances[cumulativeDistances.length - 1];
+  let i = 1;
+  while (i < cumulativeDistances.length - 1 && cumulativeDistances[i] < target) i++;
+  const d0 = cumulativeDistances[i - 1];
+  const d1 = cumulativeDistances[i];
+  const segFrac = d1 > d0 ? (target - d0) / (d1 - d0) : 0;
+  const a = path[i - 1];
+  const b = path[i];
+  return { lat: a.lat + (b.lat - a.lat) * segFrac, lng: a.lng + (b.lng - a.lng) * segFrac };
 }
 
 const DRIVE_DURATION_MS = 9000;
@@ -117,7 +139,13 @@ export function HeroRouteMap({
         if (status !== "OK" || !result?.routes[0]) return;
         const path = result.routes[0].overview_path.map((p) => ({ lat: p.lat(), lng: p.lng() }));
         const midPos = path[Math.floor(path.length / 2)] ?? route.toPos;
-        setResolved({ ...route, path, midPos, bounds: result.routes[0].bounds });
+        setResolved({
+          ...route,
+          path,
+          midPos,
+          bounds: result.routes[0].bounds,
+          cumulativeDistances: buildCumulativeDistances(path),
+        });
         onRouteResolved?.({ from: route.from, to: route.to, price: route.price });
       }
     );
@@ -136,23 +164,18 @@ export function HeroRouteMap({
     }
   }, [map, resolved]);
 
-  // Drive the car back and forth along the route on a loop, so the map has
-  // some motion instead of sitting static. A cosine-based ping-pong gives a
-  // smooth ease in/out at both ends instead of a linear drive that snaps
-  // back to the start. Throttled to ~25fps — smooth enough for a
-  // slow-moving marker without re-rendering on every animation frame.
+  // Drive the car back and forth along the route on a loop, at one
+  // constant speed (a linear triangle wave, not eased), updated every
+  // animation frame — the earlier 40ms throttle was coarse enough to read
+  // as jitter rather than smooth motion.
   const [driveProgress, setDriveProgress] = useState(0);
   useEffect(() => {
     if (!resolved) return;
     let raf: number;
-    let lastUpdate = 0;
     const start = performance.now();
     const loop = (now: number) => {
-      if (now - lastUpdate > 40) {
-        lastUpdate = now;
-        const phase = ((now - start) % (DRIVE_DURATION_MS * 2)) / DRIVE_DURATION_MS;
-        setDriveProgress((1 - Math.cos(phase * Math.PI)) / 2);
-      }
+      const phase = ((now - start) % (DRIVE_DURATION_MS * 2)) / DRIVE_DURATION_MS;
+      setDriveProgress(phase <= 1 ? phase : 2 - phase);
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
@@ -236,7 +259,10 @@ export function HeroRouteMap({
               is shown in the widget below the map, not on the map surface,
               since Google's own place labels made an on-map text card
               unreliable to read at every zoom level. */}
-          <OverlayView position={pointAlongPath(resolved.path, driveProgress)} mapPaneName={OverlayView.FLOAT_PANE}>
+          <OverlayView
+            position={pointAtDistanceFraction(resolved.path, resolved.cumulativeDistances, driveProgress)}
+            mapPaneName={OverlayView.FLOAT_PANE}
+          >
             <div className="flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-foreground shadow-[0_8px_20px_-6px_rgba(28,26,24,0.5)]">
               <Car className="h-4 w-4 text-background" />
             </div>
