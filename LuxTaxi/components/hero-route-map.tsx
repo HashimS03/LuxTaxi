@@ -80,6 +80,21 @@ function pickRandomRoute(): SampleRoute {
   return SAMPLE_ROUTES[Math.floor(Math.random() * SAMPLE_ROUTES.length)];
 }
 
+// Linear position along a polyline at progress t (0..1), interpolating
+// between the two nearest points so the car eases smoothly between the
+// road-following vertices instead of jumping from point to point.
+function pointAlongPath(path: { lat: number; lng: number }[], t: number) {
+  if (path.length < 2) return path[0];
+  const scaled = t * (path.length - 1);
+  const i = Math.floor(scaled);
+  const frac = scaled - i;
+  const a = path[i];
+  const b = path[Math.min(i + 1, path.length - 1)];
+  return { lat: a.lat + (b.lat - a.lat) * frac, lng: a.lng + (b.lng - a.lng) * frac };
+}
+
+const DRIVE_DURATION_MS = 9000;
+
 export function HeroRouteMap({
   onRouteResolved,
 }: {
@@ -120,6 +135,26 @@ export function HeroRouteMap({
       map.fitBounds(resolved.bounds, { top: 60, right: 60, bottom: 150, left: 60 });
     }
   }, [map, resolved]);
+
+  // Drive the car along the route on a loop, so the map has some motion
+  // instead of sitting static. Throttled to ~25fps — smooth enough for a
+  // slow-moving marker without re-rendering on every animation frame.
+  const [driveProgress, setDriveProgress] = useState(0);
+  useEffect(() => {
+    if (!resolved) return;
+    let raf: number;
+    let lastUpdate = 0;
+    const start = performance.now();
+    const loop = (now: number) => {
+      if (now - lastUpdate > 40) {
+        lastUpdate = now;
+        setDriveProgress(((now - start) % DRIVE_DURATION_MS) / DRIVE_DURATION_MS);
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [resolved]);
 
   if (!isConfigured || !isLoaded) {
     // Warm gradient placeholder so the panel still looks intentional
@@ -189,11 +224,16 @@ export function HeroRouteMap({
             }}
           />
 
-          {/* The car, sitting on the route — the route/fare itself is
-              shown in the widget below the map, not on the map surface,
+          {/* A soft radar pulse at the destination, marking the arrival point */}
+          <OverlayView position={resolved.path[resolved.path.length - 1]} mapPaneName={OverlayView.FLOAT_PANE}>
+            <span className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 animate-ping rounded-full bg-accent opacity-60" />
+          </OverlayView>
+
+          {/* The car, driving the route on a loop — the route/fare itself
+              is shown in the widget below the map, not on the map surface,
               since Google's own place labels made an on-map text card
               unreliable to read at every zoom level. */}
-          <OverlayView position={resolved.midPos} mapPaneName={OverlayView.FLOAT_PANE}>
+          <OverlayView position={pointAlongPath(resolved.path, driveProgress)} mapPaneName={OverlayView.FLOAT_PANE}>
             <div className="flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-foreground shadow-[0_8px_20px_-6px_rgba(28,26,24,0.5)]">
               <Car className="h-4 w-4 text-background" />
             </div>
