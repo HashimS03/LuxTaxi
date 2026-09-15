@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Car } from "lucide-react";
-import { GoogleMap, Polyline, OverlayView } from "@react-google-maps/api";
-import { useGoogleMapsLoader, OSLO_CENTER, ELEGANT_MAP_STYLE, BRAND_ACCENT } from "@/lib/google-maps-loader";
+import { GoogleMap, Marker, Polyline, OverlayView } from "@react-google-maps/api";
+import { useGoogleMapsLoader, OSLO_CENTER, ELEGANT_MAP_STYLE, BRAND_INK, BRAND_ACCENT } from "@/lib/google-maps-loader";
 
 // Illustrative sample routes for the hero map — approximate landmark
 // coordinates and representative fares, not a live quote. The real,
@@ -147,6 +147,30 @@ export function HeroRouteMap() {
             }}
           />
 
+          {/* Trip start and end points */}
+          <Marker
+            position={resolved.path[0]}
+            icon={{
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 5,
+              fillColor: "#FFFFFF",
+              fillOpacity: 1,
+              strokeColor: BRAND_INK,
+              strokeWeight: 2,
+            }}
+          />
+          <Marker
+            position={resolved.path[resolved.path.length - 1]}
+            icon={{
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 5,
+              fillColor: BRAND_ACCENT,
+              fillOpacity: 1,
+              strokeColor: "#FFFFFF",
+              strokeWeight: 2,
+            }}
+          />
+
           {/* The car, sitting on the route */}
           <OverlayView position={resolved.midPos} mapPaneName={OverlayView.FLOAT_PANE}>
             <div className="flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-foreground shadow-[0_8px_20px_-6px_rgba(28,26,24,0.5)]">
@@ -157,7 +181,7 @@ export function HeroRouteMap() {
           {/* Route + fare label, offset below the car */}
           <OverlayView position={resolved.midPos} mapPaneName={OverlayView.FLOAT_PANE}>
             <div
-              className="translate-y-4 -translate-x-1/2 whitespace-nowrap rounded-full border border-border bg-card/95 px-3 py-1.5 shadow-[0_8px_20px_-10px_rgba(28,26,24,0.45)]"
+              className="translate-y-4 -translate-x-1/2 whitespace-nowrap rounded-lg border border-border bg-card/95 px-3 py-1.5 shadow-[0_8px_20px_-10px_rgba(28,26,24,0.45)]"
               style={{ fontFamily: "var(--font-inter), system-ui, sans-serif" }}
             >
               <span className="text-[11px] font-medium text-foreground">
