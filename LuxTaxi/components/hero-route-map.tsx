@@ -138,12 +138,24 @@ export function HeroRouteMap() {
     >
       {resolved && (
         <>
+          {/* White casing under the route so it reads as a clean, bordered
+              ribbon over the map instead of a thin, harsh line. */}
+          <Polyline
+            path={resolved.path}
+            options={{
+              strokeColor: "#FFFFFF",
+              strokeOpacity: 1,
+              strokeWeight: 7,
+              zIndex: 1,
+            }}
+          />
           <Polyline
             path={resolved.path}
             options={{
               strokeColor: BRAND_ACCENT,
-              strokeOpacity: 0.85,
-              strokeWeight: 3,
+              strokeOpacity: 1,
+              strokeWeight: 4,
+              zIndex: 2,
             }}
           />
 
