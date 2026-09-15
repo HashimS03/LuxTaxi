@@ -145,7 +145,7 @@ export function HeroRouteMap() {
             options={{
               strokeColor: "#FFFFFF",
               strokeOpacity: 1,
-              strokeWeight: 7,
+              strokeWeight: 11,
               zIndex: 1,
             }}
           />
@@ -154,7 +154,7 @@ export function HeroRouteMap() {
             options={{
               strokeColor: BRAND_ACCENT,
               strokeOpacity: 1,
-              strokeWeight: 4,
+              strokeWeight: 6,
               zIndex: 2,
             }}
           />
@@ -183,23 +183,26 @@ export function HeroRouteMap() {
             }}
           />
 
-          {/* The car, sitting on the route */}
-          <OverlayView position={resolved.midPos} mapPaneName={OverlayView.FLOAT_PANE}>
-            <div className="flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-foreground shadow-[0_8px_20px_-6px_rgba(28,26,24,0.5)]">
-              <Car className="h-4 w-4 text-background" />
-            </div>
-          </OverlayView>
-
-          {/* Route + fare label, offset below the car */}
+          {/* The car + route/fare, as one card sitting on the route */}
           <OverlayView position={resolved.midPos} mapPaneName={OverlayView.FLOAT_PANE}>
             <div
-              className="translate-y-4 -translate-x-1/2 whitespace-nowrap rounded-lg border border-border bg-card/95 px-3 py-1.5 shadow-[0_8px_20px_-10px_rgba(28,26,24,0.45)]"
+              className="flex -translate-x-1/2 -translate-y-1/2 items-center gap-3 whitespace-nowrap rounded-2xl border border-border bg-card px-4 py-2.5 shadow-[0_20px_40px_-16px_rgba(28,26,24,0.45)]"
               style={{ fontFamily: "var(--font-inter), system-ui, sans-serif" }}
             >
-              <span className="text-[11px] font-medium text-foreground">
-                {resolved.from} <span className="text-muted-foreground">→</span> {resolved.to}
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-foreground">
+                <Car className="h-4 w-4 text-background" />
               </span>
-              <span className="ml-2 text-[11px] font-semibold text-accent">{resolved.price}</span>
+              <div>
+                <p className="text-[11px] font-medium text-muted-foreground">
+                  {resolved.from} <span className="text-foreground">→</span> {resolved.to}
+                </p>
+                <p
+                  className="text-base font-semibold leading-tight text-accent"
+                  style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}
+                >
+                  {resolved.price}
+                </p>
+              </div>
             </div>
           </OverlayView>
         </>
