@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, Globe, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LogoMark } from "@/components/logo-mark";
 import { useLocale } from "@/lib/locale-context";
 
 export function Navbar() {
@@ -15,9 +16,7 @@ export function Navbar() {
       <div className="mx-auto max-w-6xl rounded-full border border-border bg-card/95 backdrop-blur-md shadow-[0_12px_32px_-18px_rgba(35,38,32,0.18)] px-5 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brandPine text-[13px] font-serif font-semibold text-muted">
-              OL
-            </span>
+            <LogoMark className="h-8 w-8 shrink-0" />
             <span className="font-serif text-lg md:text-xl font-semibold tracking-tight text-foreground">
               Oslo Limousine
             </span>
