@@ -19,6 +19,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     "hero.cta": "Book Your Ride",
     "hero.explore": "Explore Our Fleet",
     "hero.discover": "Discover",
+    "hero.mapWidgetTitle": "Sample routes & fares",
+    "hero.mapWidgetBadge": "Fixed & distance rates",
+    "hero.mapWidgetCta": "Get your instant fare",
 
     // Fleet
     "fleet.tagline": "Our Fleet",
@@ -261,6 +264,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     "hero.cta": "Bestill Din Tur",
     "hero.explore": "Utforsk Vår Flåte",
     "hero.discover": "Oppdag",
+    "hero.mapWidgetTitle": "Eksempelruter og priser",
+    "hero.mapWidgetBadge": "Faste og distansepriser",
+    "hero.mapWidgetCta": "Få din pris med en gang",
 
     // Fleet
     "fleet.tagline": "Vår Flåte",

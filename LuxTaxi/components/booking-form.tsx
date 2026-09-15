@@ -40,8 +40,8 @@ import {
   GoogleMap,
   DirectionsRenderer,
   Marker,
-  useJsApiLoader,
 } from "@react-google-maps/api";
+import { useGoogleMapsLoader, OSLO_CENTER } from "@/lib/google-maps-loader";
 import {
   isMeteredVehicle,
   calculateHourlyFare,
@@ -61,8 +61,6 @@ import type {
   BookingRequest,
 } from "@/lib/booking-types";
 
-const GOOGLE_MAPS_LIBRARIES: "places"[] = ["places"];
-const OSLO_CENTER = { lat: 59.9139, lng: 10.7522 };
 const GARDEMOEN_ADDRESS = "Oslo Lufthavn, Gardemoen, Norway";
 
 export function BookingForm() {
@@ -114,12 +112,7 @@ export function BookingForm() {
   const dropoffAutoRef = useRef<google.maps.places.Autocomplete | null>(null);
   const fixedAddressAutoRef = useRef<google.maps.places.Autocomplete | null>(null);
 
-  const mapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
-  const mapsConfigured = mapsApiKey.length > 0;
-  const { isLoaded: mapsLoaded } = useJsApiLoader({
-    googleMapsApiKey: mapsApiKey,
-    libraries: GOOGLE_MAPS_LIBRARIES,
-  });
+  const { isLoaded: mapsLoaded, isConfigured: mapsConfigured } = useGoogleMapsLoader();
 
   useEffect(() => {
     if (typeof window !== "undefined" && new URLSearchParams(window.location.search).get("payment") === "cancelled") {
@@ -409,7 +402,7 @@ export function BookingForm() {
             <Button
               onClick={resetForm}
               variant="outline"
-              className="mt-4 border-foreground/20 hover:bg-foreground hover:text-background transition-all duration-300"
+              className="mt-4 rounded-full border-border hover:bg-foreground hover:text-background transition-all duration-300"
             >
               {t("booking.bookAnother")}
             </Button>
@@ -438,7 +431,7 @@ export function BookingForm() {
             {/* Trust Indicators */}
             <div className="grid grid-cols-2 gap-6 sm:gap-8">
               <div className="flex items-start gap-4">
-                <div className="h-10 w-10 shrink-0 flex items-center justify-center bg-muted border border-border">
+                <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-muted">
                   <Clock className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
@@ -447,7 +440,7 @@ export function BookingForm() {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="h-10 w-10 shrink-0 flex items-center justify-center bg-muted border border-border">
+                <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-muted">
                   <CheckCircle2 className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
@@ -456,7 +449,7 @@ export function BookingForm() {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="h-10 w-10 shrink-0 flex items-center justify-center bg-muted border border-border">
+                <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-muted">
                   <ShieldCheck className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
@@ -465,7 +458,7 @@ export function BookingForm() {
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="h-10 w-10 shrink-0 flex items-center justify-center bg-muted border border-border">
+                <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-muted">
                   <BadgeDollarSign className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
@@ -480,17 +473,17 @@ export function BookingForm() {
           <div>
             <form
               onSubmit={handleSubmit}
-              className="bg-background border border-border p-8 lg:p-10"
+              className="bg-background border border-border rounded-3xl p-8 lg:p-10"
             >
               {error && (
-                <div className="mb-6 flex items-center gap-3 border border-destructive/50 bg-destructive/5 p-4">
+                <div className="mb-6 flex items-center gap-3 rounded-2xl border border-destructive/50 bg-destructive/5 p-4">
                   <AlertCircle className="h-5 w-5 shrink-0 text-destructive" />
                   <p className="text-sm text-destructive">{error}</p>
                 </div>
               )}
 
               {cancelledNotice && (
-                <div className="mb-6 flex items-center gap-3 border border-border bg-muted/50 p-4">
+                <div className="mb-6 flex items-center gap-3 rounded-2xl border border-border bg-muted/50 p-4">
                   <Info className="h-5 w-5 shrink-0 text-accent" />
                   <p className="text-sm text-muted-foreground">{t("booking.paymentCancelled")}</p>
                 </div>
@@ -633,7 +626,7 @@ export function BookingForm() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3 bg-muted/50 border border-border p-4">
+                    <div className="flex items-start gap-3 rounded-2xl bg-muted/50 border border-border p-4">
                       <Info className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                       <p className="text-sm text-muted-foreground">{t("booking.customQuoteNote")}</p>
                     </div>
@@ -649,7 +642,7 @@ export function BookingForm() {
                         <button
                           type="button"
                           onClick={() => setRateType("fixed")}
-                          className={`text-left p-4 border transition-all duration-300 ${
+                          className={`text-left p-4 rounded-2xl border transition-all duration-300 ${
                             rateType === "fixed"
                               ? "border-foreground bg-foreground text-background"
                               : "border-border bg-muted/50 hover:bg-muted"
@@ -670,7 +663,7 @@ export function BookingForm() {
                         <button
                           type="button"
                           onClick={() => setRateType("distance")}
-                          className={`text-left p-4 border transition-all duration-300 ${
+                          className={`text-left p-4 rounded-2xl border transition-all duration-300 ${
                             rateType === "distance"
                               ? "border-foreground bg-foreground text-background"
                               : "border-border bg-muted/50 hover:bg-muted"
@@ -692,7 +685,7 @@ export function BookingForm() {
                     </div>
 
                     {!mapsConfigured && (
-                      <div className="flex items-start gap-3 bg-muted/50 border border-border p-4">
+                      <div className="flex items-start gap-3 rounded-2xl bg-muted/50 border border-border p-4">
                         <Info className="h-4 w-4 text-accent shrink-0 mt-0.5" />
                         <p className="text-sm text-muted-foreground">{t("booking.mapsUnavailable")}</p>
                       </div>
@@ -704,7 +697,7 @@ export function BookingForm() {
                           <button
                             type="button"
                             onClick={() => setFixedOption("hourly")}
-                            className={`flex items-center justify-center gap-2 p-3 border text-sm font-medium transition-all duration-300 ${
+                            className={`flex items-center justify-center gap-2 p-3 rounded-2xl border text-sm font-medium transition-all duration-300 ${
                               fixedOption === "hourly"
                                 ? "border-foreground bg-foreground text-background"
                                 : "border-border bg-muted/50 hover:bg-muted"
@@ -716,7 +709,7 @@ export function BookingForm() {
                           <button
                             type="button"
                             onClick={() => setFixedOption("airport")}
-                            className={`flex items-center justify-center gap-2 p-3 border text-sm font-medium transition-all duration-300 ${
+                            className={`flex items-center justify-center gap-2 p-3 rounded-2xl border text-sm font-medium transition-all duration-300 ${
                               fixedOption === "airport"
                                 ? "border-foreground bg-foreground text-background"
                                 : "border-border bg-muted/50 hover:bg-muted"
@@ -794,7 +787,7 @@ export function BookingForm() {
                                 : t("booking.airportOutsideOsloNote")}
                             </p>
                             {mapsConfigured && fixedAddress && (
-                              <div className="border border-border overflow-hidden">
+                              <div className="rounded-2xl border border-border overflow-hidden">
                                 {routeLoading ? (
                                   <div className="h-56 flex items-center justify-center bg-muted/50 text-sm text-muted-foreground gap-2">
                                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -826,7 +819,7 @@ export function BookingForm() {
                         )}
 
                         {fixedOption === "hourly" && mapsConfigured && fixedAddress && (
-                          <div className="border border-border overflow-hidden">
+                          <div className="rounded-2xl border border-border overflow-hidden">
                             {mapsLoaded && fixedAddressLocation ? (
                               <GoogleMap
                                 mapContainerStyle={{ width: "100%", height: "224px" }}
@@ -918,7 +911,7 @@ export function BookingForm() {
                         </div>
 
                         {mapsConfigured && (pickup || dropoff) && (
-                          <div className="border border-border overflow-hidden">
+                          <div className="rounded-2xl border border-border overflow-hidden">
                             {routeLoading ? (
                               <div className="h-56 flex items-center justify-center bg-muted/50 text-sm text-muted-foreground gap-2">
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -1052,7 +1045,7 @@ export function BookingForm() {
                       <button
                         type="button"
                         onClick={() => setPaymentMethod("now")}
-                        className={`text-left p-4 border transition-all duration-300 ${
+                        className={`text-left p-4 rounded-2xl border transition-all duration-300 ${
                           paymentMethod === "now"
                             ? "border-foreground bg-foreground text-background"
                             : "border-border bg-muted/50 hover:bg-muted"
@@ -1073,7 +1066,7 @@ export function BookingForm() {
                       <button
                         type="button"
                         onClick={() => setPaymentMethod("later")}
-                        className={`text-left p-4 border transition-all duration-300 ${
+                        className={`text-left p-4 rounded-2xl border transition-all duration-300 ${
                           paymentMethod === "later"
                             ? "border-foreground bg-foreground text-background"
                             : "border-border bg-muted/50 hover:bg-muted"
@@ -1097,7 +1090,7 @@ export function BookingForm() {
               </div>
 
               {/* Booking Policy Notice */}
-              <div className="mt-6 p-4 bg-muted/50 border border-border">
+              <div className="mt-6 p-4 rounded-2xl bg-muted/50 border border-border">
                 <div className="flex items-start gap-3">
                   <Info className="h-5 w-5 text-accent shrink-0 mt-0.5" />
                   <div>
