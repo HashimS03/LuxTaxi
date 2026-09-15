@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { GoogleMap, Marker, Polyline, OverlayView } from "@react-google-maps/api";
-import { useGoogleMapsLoader, OSLO_CENTER, ELEGANT_MAP_STYLE, BRAND_INK, BRAND_ACCENT } from "@/lib/google-maps-loader";
+import { Car } from "lucide-react";
+import { GoogleMap, Polyline, OverlayView } from "@react-google-maps/api";
+import { useGoogleMapsLoader, OSLO_CENTER, ELEGANT_MAP_STYLE, BRAND_ACCENT } from "@/lib/google-maps-loader";
 
 // Illustrative sample routes for the hero map — approximate landmark
 // coordinates and representative fares, not a live quote. The real,
@@ -20,8 +21,7 @@ type SampleRoute = {
 
 type ResolvedRoute = SampleRoute & {
   path: { lat: number; lng: number }[];
-  carPos: { lat: number; lng: number };
-  carHeading: number;
+  midPos: { lat: number; lng: number };
 };
 
 const SAMPLE_ROUTES: SampleRoute[] = [
@@ -75,70 +75,35 @@ const SAMPLE_ROUTES: SampleRoute[] = [
   },
 ];
 
-function pickRandomRoutes(count: number): SampleRoute[] {
-  const shuffled = [...SAMPLE_ROUTES].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
+function pickRandomRoute(): SampleRoute {
+  return SAMPLE_ROUTES[Math.floor(Math.random() * SAMPLE_ROUTES.length)];
 }
-
-// Bearing in degrees (0 = north/up), used to point the car icon the way
-// it's actually travelling at that point on the road.
-function bearing(from: { lat: number; lng: number }, to: { lat: number; lng: number }) {
-  const toRad = (d: number) => (d * Math.PI) / 180;
-  const toDeg = (r: number) => (r * 180) / Math.PI;
-  const lat1 = toRad(from.lat);
-  const lat2 = toRad(to.lat);
-  const dLng = toRad(to.lng - from.lng);
-  const y = Math.sin(dLng) * Math.cos(lat2);
-  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng);
-  return (toDeg(Math.atan2(y, x)) + 360) % 360;
-}
-
-// A simple top-down car silhouette, nose pointing up (bearing 0), so it
-// can be rotated to match the road's actual direction of travel.
-const CAR_ICON_PATH =
-  "M 0,-6 C 1.8,-6 3,-4.6 3,-3 L 3,2.5 C 3,4 1.8,5 0.8,5 L -0.8,5 C -1.8,5 -3,4 -3,2.5 L -3,-3 C -3,-4.6 -1.8,-6 0,-6 Z";
 
 export function HeroRouteMap() {
   const { isLoaded, isConfigured } = useGoogleMapsLoader();
-  const routes = useMemo(() => pickRandomRoutes(3), []);
-  const [resolved, setResolved] = useState<ResolvedRoute[]>([]);
+  const route = useMemo(() => pickRandomRoute(), []);
+  const [resolved, setResolved] = useState<ResolvedRoute | null>(null);
 
   useEffect(() => {
     if (!isLoaded) return;
     let cancelled = false;
     const service = new google.maps.DirectionsService();
 
-    Promise.all(
-      routes.map(
-        (r) =>
-          new Promise<ResolvedRoute | null>((resolve) => {
-            service.route(
-              { origin: r.fromPos, destination: r.toPos, travelMode: google.maps.TravelMode.DRIVING },
-              (result, status) => {
-                if (status !== "OK" || !result?.routes[0]) {
-                  resolve(null);
-                  return;
-                }
-                const overview = result.routes[0].overview_path.map((p) => ({ lat: p.lat(), lng: p.lng() }));
-                const midIndex = Math.floor(overview.length / 2);
-                const carPos = overview[midIndex] ?? r.toPos;
-                const heading = bearing(
-                  overview[Math.max(0, midIndex - 1)] ?? r.fromPos,
-                  overview[Math.min(overview.length - 1, midIndex + 1)] ?? r.toPos
-                );
-                resolve({ ...r, path: overview, carPos, carHeading: heading });
-              }
-            );
-          })
-      )
-    ).then((results) => {
-      if (!cancelled) setResolved(results.filter((r): r is ResolvedRoute => r !== null));
-    });
+    service.route(
+      { origin: route.fromPos, destination: route.toPos, travelMode: google.maps.TravelMode.DRIVING },
+      (result, status) => {
+        if (cancelled) return;
+        if (status !== "OK" || !result?.routes[0]) return;
+        const path = result.routes[0].overview_path.map((p) => ({ lat: p.lat(), lng: p.lng() }));
+        const midPos = path[Math.floor(path.length / 2)] ?? route.toPos;
+        setResolved({ ...route, path, midPos });
+      }
+    );
 
     return () => {
       cancelled = true;
     };
-  }, [isLoaded, routes]);
+  }, [isLoaded, route]);
 
   if (!isConfigured || !isLoaded) {
     // Warm gradient placeholder so the panel still looks intentional
@@ -159,62 +124,38 @@ export function HeroRouteMap() {
         styles: ELEGANT_MAP_STYLE,
       }}
     >
-      {resolved.map((r) => (
-        <div key={r.id}>
+      {resolved && (
+        <>
           <Polyline
-            path={r.path}
+            path={resolved.path}
             options={{
               strokeColor: BRAND_ACCENT,
               strokeOpacity: 0.85,
               strokeWeight: 3,
             }}
           />
-          <Marker
-            position={r.fromPos}
-            icon={{
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 4,
-              fillColor: "#FFFFFF",
-              fillOpacity: 1,
-              strokeColor: BRAND_INK,
-              strokeWeight: 1.5,
-            }}
-          />
-          <Marker
-            position={r.toPos}
-            icon={{
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 4,
-              fillColor: BRAND_ACCENT,
-              fillOpacity: 1,
-              strokeColor: "#FFFFFF",
-              strokeWeight: 1.5,
-            }}
-          />
-          {/* The "car" en route — a rotated silhouette pointing the way it's driving */}
-          <Marker
-            position={r.carPos}
-            icon={{
-              path: CAR_ICON_PATH,
-              scale: 2.2,
-              rotation: r.carHeading,
-              fillColor: BRAND_INK,
-              fillOpacity: 1,
-              strokeColor: "#FFFFFF",
-              strokeWeight: 1,
-              anchor: new google.maps.Point(0, 0),
-            }}
-          />
-          <OverlayView position={r.carPos} mapPaneName={OverlayView.FLOAT_PANE}>
-            <div className="-translate-x-1/2 translate-y-3 whitespace-nowrap rounded-full border border-border bg-card/95 px-3 py-1.5 shadow-[0_8px_20px_-10px_rgba(28,26,24,0.45)]">
-              <span className="text-[11px] font-medium text-foreground">
-                {r.from} <span className="text-muted-foreground">→</span> {r.to}
-              </span>
-              <span className="ml-2 text-[11px] font-semibold text-accent">{r.price}</span>
+
+          {/* The car, sitting on the route */}
+          <OverlayView position={resolved.midPos} mapPaneName={OverlayView.FLOAT_PANE}>
+            <div className="flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-foreground shadow-[0_8px_20px_-6px_rgba(28,26,24,0.5)]">
+              <Car className="h-4 w-4 text-background" />
             </div>
           </OverlayView>
-        </div>
-      ))}
+
+          {/* Route + fare label, offset below the car */}
+          <OverlayView position={resolved.midPos} mapPaneName={OverlayView.FLOAT_PANE}>
+            <div
+              className="translate-y-4 -translate-x-1/2 whitespace-nowrap rounded-full border border-border bg-card/95 px-3 py-1.5 shadow-[0_8px_20px_-10px_rgba(28,26,24,0.45)]"
+              style={{ fontFamily: "var(--font-inter), system-ui, sans-serif" }}
+            >
+              <span className="text-[11px] font-medium text-foreground">
+                {resolved.from} <span className="text-muted-foreground">→</span> {resolved.to}
+              </span>
+              <span className="ml-2 text-[11px] font-semibold text-accent">{resolved.price}</span>
+            </div>
+          </OverlayView>
+        </>
+      )}
     </GoogleMap>
   );
 }
