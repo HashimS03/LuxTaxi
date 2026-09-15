@@ -13,19 +13,19 @@ export function Stats() {
   ];
 
   return (
-    <section className="py-20 lg:py-24 bg-foreground text-background">
+    <section className="py-14 lg:py-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid grid-cols-2 gap-12 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-y-10 border-y border-border py-10 lg:grid-cols-4 lg:gap-0 lg:py-9">
           {stats.map((stat, index) => (
-            <div 
-              key={stat.label} 
-              className="text-center"
+            <div
+              key={stat.label}
+              className="text-center lg:border-r lg:border-border lg:last:border-r-0"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <p className="font-serif text-5xl md:text-6xl lg:text-7xl font-semibold text-background tracking-tight">
+              <p className="font-serif text-4xl md:text-5xl font-semibold text-foreground tracking-tight">
                 {stat.value}
               </p>
-              <p className="mt-3 text-sm font-medium text-background/60 uppercase tracking-wider">
+              <p className="mt-2 text-sm font-medium text-muted-foreground">
                 {stat.label}
               </p>
             </div>

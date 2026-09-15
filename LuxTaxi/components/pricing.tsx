@@ -10,7 +10,7 @@ export function Pricing() {
   const { t } = useLocale();
 
   return (
-    <section className="pt-40 pb-24 lg:pb-32 bg-background">
+    <section className="pt-16 lg:pt-20 pb-24 lg:pb-32 bg-background">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
         <div className="max-w-2xl mb-16">
@@ -32,11 +32,11 @@ export function Pricing() {
             return (
             <div
               key={vehicle.key}
-              className="flex flex-col bg-card border border-border overflow-hidden transition-all duration-500 hover:border-foreground/20 hover:shadow-lg"
+              className="flex flex-col bg-card border border-border rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-[0_30px_60px_-30px_rgba(35,38,32,0.25)]"
             >
               <div className="p-8 flex-1 flex flex-col">
-                <div className="mb-6 flex h-14 w-14 items-center justify-center bg-muted border border-border">
-                  <Car className="h-6 w-6 text-foreground" />
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+                  <Car className="h-5 w-5 text-accent" />
                 </div>
 
                 <h3 className="font-serif text-2xl font-semibold text-foreground mb-2">
@@ -90,7 +90,7 @@ export function Pricing() {
               </div>
 
               <div className="p-8 pt-0">
-                <Button asChild variant="outline" className="w-full group/btn border-foreground/20 hover:bg-foreground hover:text-background transition-all duration-300">
+                <Button asChild variant="outline" className="w-full rounded-full group/btn border-border hover:bg-foreground hover:text-background transition-all duration-300">
                   <Link href="/#booking" className="flex items-center justify-center gap-2">
                     {t("pricing.cta")}
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
@@ -102,7 +102,7 @@ export function Pricing() {
           })}
 
           {/* 16+ Custom Card */}
-          <div className="flex flex-col bg-background border-2 border-dashed border-border p-8 transition-all duration-300 hover:border-accent/50">
+          <div className="flex flex-col bg-card border-2 border-dashed border-border rounded-3xl p-8 transition-all duration-300 hover:border-accent/50">
             <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-accent/10 border border-accent/20">
               <Users className="h-6 w-6 text-accent" />
             </div>
@@ -117,7 +117,7 @@ export function Pricing() {
             </p>
             <Button
               asChild
-              className="w-full bg-accent text-accent-foreground hover:bg-accent/90 group/btn"
+              className="w-full rounded-full bg-accent text-accent-foreground hover:bg-accent/90 group/btn"
             >
               <Link href="/#booking" className="flex items-center justify-center gap-2">
                 {t("pricing.customCta")}
@@ -128,7 +128,7 @@ export function Pricing() {
         </div>
 
         {/* Notes */}
-        <div className="mt-12 flex items-start gap-3 bg-muted/50 border border-border p-6">
+        <div className="mt-12 flex items-start gap-3 bg-muted/50 border border-border rounded-3xl p-6">
           <Info className="h-5 w-5 text-accent shrink-0 mt-0.5" />
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground leading-relaxed">

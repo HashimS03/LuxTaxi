@@ -41,21 +41,21 @@ export function Services() {
         </div>
 
         {/* Services Grid */}
-        <div className="grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-3 border border-border">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {serviceKeys.map((service, index) => (
             <div
               key={service.key}
-              className="group bg-card p-10 transition-all duration-500 hover:bg-muted/50"
+              className="group bg-card border border-border rounded-3xl p-9 transition-all duration-500 hover:shadow-[0_24px_50px_-28px_rgba(35,38,32,0.25)]"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
-              <div className="mb-6 flex h-14 w-14 items-center justify-center bg-muted border border-border transition-all duration-500 group-hover:bg-foreground group-hover:border-foreground">
-                <service.icon className="h-6 w-6 text-foreground transition-colors duration-500 group-hover:text-background" />
+              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-muted transition-all duration-500 group-hover:bg-foreground">
+                <service.icon className="h-5 w-5 text-accent transition-colors duration-500 group-hover:text-background" />
               </div>
-              
+
               <h3 className="font-serif text-xl font-semibold text-foreground mb-3">
                 {t(`services.${service.key}`)}
               </h3>
-              
+
               <p className="text-muted-foreground leading-relaxed">
                 {t(`services.${service.key}Desc`)}
               </p>

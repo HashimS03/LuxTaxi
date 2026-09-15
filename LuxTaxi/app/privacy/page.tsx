@@ -30,7 +30,7 @@ export default function PrivacyPage() {
   return (
     <main>
       <Navbar />
-      <section className="pt-40 pb-16 bg-background">
+      <section className="pt-16 lg:pt-20 pb-16 bg-background">
         <div className="mx-auto max-w-3xl px-6 lg:px-8">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-accent mb-4">
             Legal

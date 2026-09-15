@@ -46,7 +46,7 @@ export function Fleet() {
             return (
               <div
                 key={vehicle.key}
-                className="group bg-background border border-border overflow-hidden transition-all duration-500 hover:border-foreground/20 hover:shadow-lg"
+                className="group bg-card border border-border rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-[0_30px_60px_-30px_rgba(35,38,32,0.25)]"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
@@ -57,7 +57,7 @@ export function Fleet() {
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-background/90 backdrop-blur-sm px-3 py-2 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                  <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-full bg-card/90 backdrop-blur-sm px-3 py-2 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
                     <Users className="h-4 w-4 text-accent" />
                     <span className="text-sm font-medium text-foreground">
                       {vehicle.passengers} {t("fleet.passengers")}
@@ -77,14 +77,14 @@ export function Fleet() {
                     {features.map((feature) => (
                       <span
                         key={feature}
-                        className="px-3 py-1.5 text-xs font-medium text-muted-foreground bg-muted border border-border"
+                        className="px-3 py-1.5 text-xs font-medium text-muted-foreground bg-muted rounded-full"
                       >
                         {feature}
                       </span>
                     ))}
                   </div>
 
-                  <Button asChild variant="outline" className="w-full group/btn border-foreground/20 hover:bg-foreground hover:text-background transition-all duration-300">
+                  <Button asChild variant="outline" className="w-full rounded-full group/btn border-border hover:bg-foreground hover:text-background transition-all duration-300">
                     <Link href="#booking" className="flex items-center justify-center gap-2">
                       {t("fleet.book")} {name}
                       <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
@@ -98,7 +98,7 @@ export function Fleet() {
 
         {/* Custom Order Card */}
         <div className="mt-12">
-          <div className="bg-background border-2 border-dashed border-border p-10 lg:p-12 flex flex-col md:flex-row items-center gap-8 lg:gap-12 transition-all duration-300 hover:border-accent/50">
+          <div className="bg-card border-2 border-dashed border-border rounded-3xl p-10 lg:p-12 flex flex-col md:flex-row items-center gap-8 lg:gap-12 transition-all duration-300 hover:border-accent/50">
             <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-accent/10 border border-accent/20">
               <UsersRound className="h-10 w-10 text-accent" />
             </div>
@@ -108,7 +108,7 @@ export function Fleet() {
                 <h3 className="font-serif text-2xl font-semibold text-foreground">
                   {t("fleet.custom.name")}
                 </h3>
-                <span className="px-3 py-1 text-xs font-medium bg-accent/10 text-accent border border-accent/20">
+                <span className="px-3 py-1 text-xs font-medium bg-accent/10 text-accent rounded-full">
                   {t("fleet.custom.badge")}
                 </span>
               </div>
@@ -124,7 +124,7 @@ export function Fleet() {
                 ].map((feature) => (
                   <span
                     key={feature}
-                    className="px-3 py-1.5 text-xs font-medium bg-muted text-muted-foreground border border-border"
+                    className="px-3 py-1.5 text-xs font-medium bg-muted text-muted-foreground rounded-full"
                   >
                     {feature}
                   </span>
@@ -135,7 +135,7 @@ export function Fleet() {
             <Button
               asChild
               size="lg"
-              className="shrink-0 bg-accent text-accent-foreground hover:bg-accent/90 group/btn"
+              className="shrink-0 rounded-full bg-accent text-accent-foreground hover:bg-accent/90 group/btn"
             >
               <Link href="#booking" className="flex items-center gap-2">
                 {t("fleet.custom.cta")}

@@ -11,16 +11,19 @@ export function Navbar() {
   const { locale, setLocale, t } = useLocale();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="font-serif text-xl md:text-2xl font-semibold tracking-tight text-foreground">
+    <nav className="sticky top-4 z-50 px-4 lg:top-6 lg:px-8">
+      <div className="mx-auto max-w-6xl rounded-full border border-border bg-card/95 backdrop-blur-md shadow-[0_12px_32px_-18px_rgba(35,38,32,0.18)] px-5 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brandPine text-[13px] font-serif font-semibold text-muted">
+              OL
+            </span>
+            <span className="font-serif text-lg md:text-xl font-semibold tracking-tight text-foreground">
               Oslo Limousine
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 lg:gap-10">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
             <Link
               href="/#fleet"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
@@ -63,7 +66,7 @@ export function Navbar() {
               <Globe className="h-4 w-4" />
               <span>{locale === "en" ? "NO" : "EN"}</span>
             </button>
-            <Button asChild className="group">
+            <Button asChild className="group rounded-full">
               <Link href="/#booking" className="flex items-center gap-2">
                 {t("nav.bookRide")}
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -99,10 +102,10 @@ export function Navbar() {
 
       <div
         className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-          isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          isOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="bg-background/98 backdrop-blur-md border-t border-border">
+        <div className="mx-auto max-w-6xl rounded-3xl border border-border bg-card/98 backdrop-blur-md shadow-[0_12px_32px_-18px_rgba(35,38,32,0.18)]">
           <div className="px-6 py-8 flex flex-col gap-6">
             <Link
               href="/#fleet"
@@ -140,7 +143,7 @@ export function Navbar() {
               {t("nav.contact")}
             </Link>
             <div className="pt-4 border-t border-border">
-              <Button asChild className="w-full">
+              <Button asChild className="w-full rounded-full">
                 <Link href="/#booking" onClick={() => setIsOpen(false)}>
                   {t("nav.bookRide")}
                 </Link>
