@@ -32,7 +32,7 @@ export function Pricing() {
             return (
             <div
               key={vehicle.key}
-              className="flex flex-col bg-card border border-border rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-[0_30px_60px_-30px_rgba(35,38,32,0.25)]"
+              className="flex flex-col bg-card border border-border rounded-3xl overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(35,38,32,0.25)]"
             >
               <div className="p-8 flex-1 flex flex-col">
                 <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-muted">

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Users, ArrowRight, UsersRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/reveal";
 import { useLocale } from "@/lib/locale-context";
 
 const vehicleKeys = [
@@ -19,7 +20,7 @@ export function Fleet() {
     <section id="fleet" className="py-24 lg:py-32 bg-card">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-2xl mb-16">
+        <Reveal className="max-w-2xl mb-16">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-accent mb-4">
             {t("fleet.tagline")}
           </p>
@@ -29,7 +30,7 @@ export function Fleet() {
           <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
             {t("fleet.description")}
           </p>
-        </div>
+        </Reveal>
 
         {/* Vehicle Cards */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -44,10 +45,10 @@ export function Fleet() {
             ];
 
             return (
-              <div
+              <Reveal
                 key={vehicle.key}
-                className="group bg-card border border-border rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-[0_30px_60px_-30px_rgba(35,38,32,0.25)]"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                delay={index * 100}
+                className="group bg-card border border-border rounded-3xl overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(35,38,32,0.25)]"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
@@ -91,7 +92,7 @@ export function Fleet() {
                     </Link>
                   </Button>
                 </div>
-              </div>
+              </Reveal>
             );
           })}
         </div>

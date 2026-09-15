@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Reveal } from "@/components/reveal";
 import {
   Select,
   SelectContent,
@@ -417,7 +418,7 @@ export function BookingForm() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
           {/* Left Column - Text */}
-          <div className="lg:py-8 lg:sticky lg:top-32 lg:self-start">
+          <Reveal className="lg:py-8 lg:sticky lg:top-32 lg:self-start">
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-accent mb-4">
               {t("booking.tagline")}
             </p>
@@ -467,7 +468,7 @@ export function BookingForm() {
                 </div>
               </div>
             </div>
-          </div>
+          </Reveal>
 
           {/* Right Column - Form */}
           <div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, ShieldCheck, BadgeDollarSign } from "lucide-react";
@@ -8,6 +9,7 @@ import { HeroRouteMap } from "@/components/hero-route-map";
 
 export function Hero() {
   const { t } = useLocale();
+  const [liveRoute, setLiveRoute] = useState<{ from: string; to: string; price: string } | null>(null);
 
   return (
     <section className="grid lg:grid-cols-2 lg:min-h-[720px]">
@@ -65,7 +67,7 @@ export function Hero() {
       {/* Route map panel — full-bleed, a real live-styled map with a few
           sample routes and fares, standing in for a hero photograph. */}
       <div className="order-1 lg:order-2 relative h-[45vh] lg:h-auto overflow-hidden">
-        <HeroRouteMap />
+        <HeroRouteMap onRouteResolved={setLiveRoute} />
 
         {/* Bottom scrim so the fare widget stays legible over any part of the map */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/30 to-transparent" />
@@ -76,9 +78,16 @@ export function Hero() {
               <p className="text-[10px] font-semibold uppercase tracking-widest text-accent">
                 {t("hero.mapWidgetBadge")}
               </p>
-              <p className="mt-1 font-serif text-sm font-semibold text-foreground">
-                {t("hero.mapWidgetTitle")}
-              </p>
+              {liveRoute ? (
+                <p className="mt-1 font-serif text-sm font-semibold text-foreground">
+                  {liveRoute.from} <span className="text-muted-foreground">→</span> {liveRoute.to}
+                  <span className="ml-2 text-accent">{liveRoute.price}</span>
+                </p>
+              ) : (
+                <p className="mt-1 font-serif text-sm font-semibold text-foreground">
+                  {t("hero.mapWidgetTitle")}
+                </p>
+              )}
             </div>
             <Link
               href="#booking"
