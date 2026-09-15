@@ -136,8 +136,10 @@ export function HeroRouteMap({
     }
   }, [map, resolved]);
 
-  // Drive the car along the route on a loop, so the map has some motion
-  // instead of sitting static. Throttled to ~25fps — smooth enough for a
+  // Drive the car back and forth along the route on a loop, so the map has
+  // some motion instead of sitting static. A cosine-based ping-pong gives a
+  // smooth ease in/out at both ends instead of a linear drive that snaps
+  // back to the start. Throttled to ~25fps — smooth enough for a
   // slow-moving marker without re-rendering on every animation frame.
   const [driveProgress, setDriveProgress] = useState(0);
   useEffect(() => {
@@ -148,7 +150,8 @@ export function HeroRouteMap({
     const loop = (now: number) => {
       if (now - lastUpdate > 40) {
         lastUpdate = now;
-        setDriveProgress(((now - start) % DRIVE_DURATION_MS) / DRIVE_DURATION_MS);
+        const phase = ((now - start) % (DRIVE_DURATION_MS * 2)) / DRIVE_DURATION_MS;
+        setDriveProgress((1 - Math.cos(phase * Math.PI)) / 2);
       }
       raf = requestAnimationFrame(loop);
     };
