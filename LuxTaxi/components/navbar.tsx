@@ -98,11 +98,11 @@ export function Navbar() {
       </div>
 
       <div
-        className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-          isOpen ? "max-h-96 opacity-100 mt-2" : "max-h-0 opacity-0"
+        className={`absolute inset-x-4 top-full md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+          isOpen ? "max-h-96 opacity-100 mt-2" : "pointer-events-none max-h-0 opacity-0"
         }`}
       >
-        <div className="mx-auto max-w-6xl rounded-3xl border border-border bg-card/98 backdrop-blur-md shadow-[0_12px_32px_-18px_rgba(35,38,32,0.18)]">
+        <div className="mx-auto max-w-6xl rounded-3xl border border-border bg-card/95 backdrop-blur-md shadow-[0_12px_32px_-18px_rgba(35,38,32,0.18)]">
           <div className="px-6 py-8 flex flex-col gap-6">
             <Link
               href="/#fleet"

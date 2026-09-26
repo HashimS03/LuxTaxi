@@ -1,37 +1,72 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, ShieldCheck, BadgeDollarSign } from "lucide-react";
 import { useLocale } from "@/lib/locale-context";
-import { HeroRouteMap } from "@/components/hero-route-map";
+import { HeroBokeh } from "@/components/hero-bokeh";
+
+const MARQUEE_SERVICES = ["airport", "corporate", "weddings", "business", "hourly", "vip"];
 
 export function Hero() {
   const { t } = useLocale();
-  const [liveRoute, setLiveRoute] = useState<{ from: string; to: string; price: string } | null>(null);
+  const services = MARQUEE_SERVICES.map((key) => t(`services.${key}`));
 
   return (
-    <section className="grid lg:grid-cols-2 lg:min-h-[720px]">
-      {/* Text panel */}
-      <div className="order-2 lg:order-1 flex items-center bg-background px-6 py-14 lg:px-16 lg:py-24">
+    // Pulled up under the floating navbar so the dark scene starts at the
+    // very top of the page instead of below an ivory strip.
+    <section className="relative isolate -mt-16 flex flex-col overflow-hidden bg-[#0d0b0a] text-white lg:min-h-[max(100svh,760px)]">
+      {/* Photo — full width on mobile, the right two-thirds on desktop so
+          the car never sits behind the headline. */}
+      <div className="relative h-[60svh] min-h-[420px] overflow-hidden lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[66%]">
+        <Image
+          src="/images/hero.jpg"
+          alt="Chauffeured black sedan on a city highway at night"
+          fill
+          priority
+          sizes="(min-width: 1024px) 66vw, 100vw"
+          className="animate-kenburns object-cover object-[45%_55%]"
+        />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#0d0b0a]/70 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0d0b0a] to-transparent lg:h-1/3" />
+        <div className="absolute inset-y-0 left-0 hidden w-1/2 bg-gradient-to-r from-[#0d0b0a] to-transparent lg:block" />
+      </div>
+
+      <div className="pointer-events-none absolute inset-0 z-10 bg-grain opacity-[0.07] mix-blend-overlay" />
+      <HeroBokeh className="pointer-events-none absolute inset-0 z-20 h-full w-full" />
+
+      <div className="relative z-30 mx-auto -mt-28 flex w-full max-w-7xl flex-1 items-center px-6 pb-14 lg:mt-0 lg:px-8 lg:pb-16 lg:pt-32">
         <div className="max-w-xl">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-accent mb-6 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+          <p
+            className="mb-6 text-sm font-medium uppercase tracking-[0.25em] text-[#D8B676] animate-fade-in-up"
+            style={{ animationDelay: "0.1s" }}
+          >
             {t("hero.tagline")}
           </p>
 
-          <h1 className="font-serif text-5xl md:text-6xl font-medium leading-[1.1] tracking-tight text-foreground animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+          <h1
+            className="font-serif text-5xl font-medium leading-[1.05] tracking-tight animate-fade-in-up md:text-6xl xl:text-7xl"
+            style={{ animationDelay: "0.2s" }}
+          >
             {t("hero.title1")}
             <br />
-            <span className="text-shimmer">{t("hero.title2")}</span>
+            <span className="text-shimmer-gold">{t("hero.title2")}</span>
           </h1>
 
-          <p className="mt-8 text-lg text-muted-foreground leading-relaxed max-w-lg animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
+          <p
+            className="mt-7 max-w-md text-lg leading-relaxed text-white/70 animate-fade-in-up"
+            style={{ animationDelay: "0.3s" }}
+          >
             {t("hero.description")}
           </p>
 
-          <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
-            <Button size="lg" asChild className="group rounded-full text-base px-8 h-14">
+          <div className="mt-10 flex flex-col gap-4 animate-fade-in-up sm:flex-row" style={{ animationDelay: "0.4s" }}>
+            <Button
+              size="lg"
+              asChild
+              className="group h-14 rounded-full bg-white px-8 text-base text-[#0d0b0a] hover:bg-white/90"
+            >
               <Link href="#booking" className="flex items-center gap-2">
                 {t("hero.cta")}
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -41,61 +76,42 @@ export function Hero() {
               variant="outline"
               size="lg"
               asChild
-              className="rounded-full text-base px-8 h-14 border-border bg-card hover:bg-muted/60 transition-all duration-300"
+              className="h-14 rounded-full border-white/25 bg-white/5 px-8 text-base text-white backdrop-blur-sm hover:bg-white/15 hover:text-white"
             >
               <Link href="#fleet">{t("hero.explore")}</Link>
             </Button>
           </div>
 
-          <div className="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-border pt-8 animate-fade-in-up" style={{ animationDelay: "0.5s" }}>
+          <div
+            className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-3 animate-fade-in-up"
+            style={{ animationDelay: "0.5s" }}
+          >
             <div className="flex items-center gap-2.5">
-              <Clock className="h-4 w-4 text-accent" />
-              <span className="text-sm font-medium text-muted-foreground">{t("booking.trust247Title")}</span>
+              <Clock className="h-4 w-4 text-[#D8B676]" />
+              <span className="text-sm text-white/65">{t("booking.trust247Title")}</span>
             </div>
             <div className="flex items-center gap-2.5">
-              <ShieldCheck className="h-4 w-4 text-accent" />
-              <span className="text-sm font-medium text-muted-foreground">{t("booking.trustDriversTitle")}</span>
+              <ShieldCheck className="h-4 w-4 text-[#D8B676]" />
+              <span className="text-sm text-white/65">{t("booking.trustDriversTitle")}</span>
             </div>
             <div className="flex items-center gap-2.5">
-              <BadgeDollarSign className="h-4 w-4 text-accent" />
-              <span className="text-sm font-medium text-muted-foreground">{t("booking.trustPricingTitle")}</span>
+              <BadgeDollarSign className="h-4 w-4 text-[#D8B676]" />
+              <span className="text-sm text-white/65">{t("booking.trustPricingTitle")}</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Route map panel — full-bleed, a real live-styled map with a few
-          sample routes and fares, standing in for a hero photograph. */}
-      <div className="order-1 lg:order-2 relative h-[45vh] lg:h-auto overflow-hidden">
-        <HeroRouteMap onRouteResolved={setLiveRoute} />
-
-        {/* Bottom scrim so the fare widget stays legible over any part of the map */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/30 to-transparent" />
-
-        <div className="absolute inset-x-6 bottom-6 sm:inset-x-10 sm:bottom-10">
-          <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/15 bg-card/90 backdrop-blur-md px-5 py-4 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-widest text-accent">
-                {t("hero.mapWidgetBadge")}
-              </p>
-              {liveRoute ? (
-                <p className="mt-1 font-serif text-sm font-semibold text-foreground">
-                  {liveRoute.from} <span className="text-muted-foreground">→</span> {liveRoute.to}
-                  <span className="ml-2 text-accent">{liveRoute.price}</span>
-                </p>
-              ) : (
-                <p className="mt-1 font-serif text-sm font-semibold text-foreground">
-                  {t("hero.mapWidgetTitle")}
-                </p>
-              )}
-            </div>
-            <Link
-              href="#booking"
-              className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-foreground px-4 py-2.5 text-xs font-medium text-background transition-opacity hover:opacity-90"
-            >
-              {t("hero.mapWidgetCta")}
-              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </Link>
+      {/* Slow-scrolling strip of the services offered */}
+      <div className="relative z-30 border-t border-white/10 bg-black/30 backdrop-blur-sm">
+        <div className="group flex overflow-hidden py-5 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+          <div className="flex w-max shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]">
+            {[...services, ...services].map((service, i) => (
+              <span key={i} className="flex items-center" aria-hidden={i >= services.length || undefined}>
+                <span className="px-8 font-serif text-lg italic text-white/75 md:text-xl">{service}</span>
+                <span className="text-xs text-[#D8B676]">✦</span>
+              </span>
+            ))}
           </div>
         </div>
       </div>

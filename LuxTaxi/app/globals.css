@@ -34,8 +34,6 @@
     /* A warm neutral stone wash for alternating section backgrounds, so
        sections read as visually distinct instead of blending together. */
     --surface-alt: 24 20% 91%;
-    /* Near-black used for the logo mark and small dark accents. */
-    --brand-ink: 30 10% 8%;
     --ring: 30 8% 10%;
     --chart-1: 30 8% 10%;
     --chart-2: 349 55% 31%;
@@ -71,7 +69,7 @@
     animation: fadeIn 0.6s ease-out forwards;
   }
   .animate-fade-in-up {
-    animation: fadeInUp 0.6s ease-out forwards;
+    animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   .animate-slide-in-left {
     animation: slideInLeft 0.6s ease-out forwards;
@@ -79,18 +77,49 @@
   .animate-slide-in-right {
     animation: slideInRight 0.6s ease-out forwards;
   }
-  .text-shimmer {
-    background: linear-gradient(
-      100deg,
-      hsl(var(--accent)) 40%,
-      hsl(var(--accent) / 0.55) 50%,
-      hsl(var(--accent)) 60%
-    );
+  .text-shimmer-gold {
+    background: linear-gradient(100deg, #d8b676 40%, #fff3d6 50%, #d8b676 60%);
     background-size: 250% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: shimmer 5s ease-in-out infinite;
+    animation: shimmer 6s ease-in-out infinite;
+  }
+  .animate-kenburns {
+    animation: kenburns 28s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  .animate-marquee {
+    animation: marquee 45s linear infinite;
+  }
+  .bg-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-shimmer-gold,
+  .animate-kenburns,
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
