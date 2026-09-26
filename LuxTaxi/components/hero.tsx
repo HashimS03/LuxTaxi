@@ -21,7 +21,7 @@ export function Hero() {
           the car never sits behind the headline. */}
       <div className="relative h-[60svh] min-h-[420px] overflow-hidden lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[66%]">
         <Image
-          src="/images/hero.jpg"
+          src="/images/hero.webp"
           alt="Chauffeured black sedan on a city highway at night"
           fill
           priority
@@ -108,7 +108,9 @@ export function Hero() {
           <div className="flex w-max shrink-0 animate-marquee items-center group-hover:[animation-play-state:paused]">
             {[...services, ...services].map((service, i) => (
               <span key={i} className="flex items-center" aria-hidden={i >= services.length || undefined}>
-                <span className="px-8 font-serif text-lg italic text-white/75 md:text-xl">{service}</span>
+                <span className="px-10 text-xs font-medium uppercase tracking-[0.3em] text-white/75 md:text-sm">
+                  {service}
+                </span>
                 <span className="text-xs text-[#D8B676]">✦</span>
               </span>
             ))}
