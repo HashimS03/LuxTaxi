@@ -1,20 +1,27 @@
 import React from "react";
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import localFont from "next/font/local";
 import { LocaleProvider } from "@/lib/locale-context";
 
 import "./globals.css";
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
+// Fonts are bundled in app/fonts instead of loaded with next/font/google, so
+// the build never fetches from Google Fonts. Google sometimes returns
+// /l/font?kit=... URLs that next/font/google can't parse, which fails the build.
+const dmSans = localFont({
+  src: "./fonts/dm-sans-latin.woff2",
   variable: "--font-inter",
-  weight: ["400", "500", "600", "700"]
+  weight: "400 700",
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
 });
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
+const fraunces = localFont({
+  src: "./fonts/fraunces-latin.woff2",
   variable: "--font-playfair",
-  weight: ["400", "500", "600"],
+  weight: "400 600",
+  display: "swap",
+  fallback: ["Georgia", "serif"],
 });
 
 export const metadata: Metadata = {
