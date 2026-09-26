@@ -48,7 +48,7 @@ export function Fleet() {
               <Reveal
                 key={vehicle.key}
                 delay={index * 100}
-                className="group bg-card border border-border rounded-3xl overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(35,38,32,0.25)]"
+                className="group bg-card border sm:last:col-span-2 sm:last:mx-auto sm:last:w-[calc(50%-1rem)] lg:last:col-span-1 lg:last:mx-0 lg:last:w-auto border-border rounded-3xl overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(35,38,32,0.25)]"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image

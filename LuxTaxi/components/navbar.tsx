@@ -20,7 +20,7 @@ export function Navbar() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
+          <div className="hidden lg:flex items-center gap-6 lg:gap-8">
             <Link
               href="/#fleet"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-300"
@@ -53,7 +53,7 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4">
             <button
               type="button"
               onClick={() => setLocale(locale === "en" ? "no" : "en")}
@@ -71,7 +71,7 @@ export function Navbar() {
             </Button>
           </div>
 
-          <div className="flex items-center gap-4 md:hidden">
+          <div className="flex items-center gap-4 lg:hidden">
             <button
               type="button"
               onClick={() => setLocale(locale === "en" ? "no" : "en")}
@@ -98,7 +98,7 @@ export function Navbar() {
       </div>
 
       <div
-        className={`absolute inset-x-4 top-full md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+        className={`absolute inset-x-4 top-full lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${
           isOpen ? "max-h-96 opacity-100 mt-2" : "pointer-events-none max-h-0 opacity-0"
         }`}
       >
