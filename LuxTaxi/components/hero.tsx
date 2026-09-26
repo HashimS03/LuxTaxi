@@ -19,7 +19,7 @@ export function Hero() {
     <section className="relative isolate -mt-16 flex flex-col overflow-hidden bg-[#0d0b0a] text-white lg:min-h-[max(100svh,760px)]">
       {/* Photo — full width on mobile, the right two-thirds on desktop so
           the car never sits behind the headline. */}
-      <div className="relative h-[60svh] min-h-[420px] overflow-hidden lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[66%]">
+      <div className="relative h-[46svh] min-h-[340px] overflow-hidden lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[66%]">
         <Image
           src="/images/hero.webp"
           alt="Chauffeured black sedan on a city highway at night"
@@ -39,7 +39,7 @@ export function Hero() {
       <div className="relative z-30 mx-auto -mt-28 flex w-full max-w-7xl flex-1 items-center px-6 pb-14 lg:mt-0 lg:px-8 lg:pb-16 lg:pt-32">
         <div className="max-w-xl">
           <p
-            className="mb-6 text-sm font-medium uppercase tracking-[0.25em] text-[#D8B676] animate-fade-in-up"
+            className="mb-4 text-sm font-medium uppercase lg:mb-6 tracking-[0.25em] text-[#D8B676] animate-fade-in-up"
             style={{ animationDelay: "0.1s" }}
           >
             {t("hero.tagline")}
@@ -55,13 +55,13 @@ export function Hero() {
           </h1>
 
           <p
-            className="mt-7 max-w-md text-lg leading-relaxed text-white/70 animate-fade-in-up"
+            className="mt-5 max-w-md lg:mt-7 text-lg leading-relaxed text-white/70 animate-fade-in-up"
             style={{ animationDelay: "0.3s" }}
           >
             {t("hero.description")}
           </p>
 
-          <div className="mt-10 flex flex-col gap-4 animate-fade-in-up sm:flex-row" style={{ animationDelay: "0.4s" }}>
+          <div className="mt-8 flex flex-col gap-3 sm:gap-4 lg:mt-10 animate-fade-in-up sm:flex-row" style={{ animationDelay: "0.4s" }}>
             <Button
               size="lg"
               asChild
@@ -83,7 +83,7 @@ export function Hero() {
           </div>
 
           <div
-            className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-3 animate-fade-in-up"
+            className="mt-8 flex flex-wrap lg:mt-12 items-center gap-x-7 gap-y-3 animate-fade-in-up"
             style={{ animationDelay: "0.5s" }}
           >
             <div className="flex items-center gap-2.5">

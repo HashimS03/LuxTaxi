@@ -114,7 +114,7 @@ export function Footer() {
                       className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm"
                     >
                       <Mail className="h-4 w-4 shrink-0" />
-                      <span className="whitespace-nowrap">theoslolimousine@gmail.com</span>
+                      <span className="min-w-0">theoslolimousine<wbr />@gmail.com</span>
                     </a>
                   </li>
                   <li>

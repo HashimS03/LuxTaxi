@@ -430,7 +430,7 @@ export function BookingForm() {
             </p>
 
             {/* Trust Indicators */}
-            <div className="grid grid-cols-2 gap-6 sm:gap-8">
+            <div className="grid gap-5 sm:grid-cols-2 sm:gap-8">
               <div className="flex items-start gap-4">
                 <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-muted">
                   <Clock className="h-5 w-5 text-foreground" />
